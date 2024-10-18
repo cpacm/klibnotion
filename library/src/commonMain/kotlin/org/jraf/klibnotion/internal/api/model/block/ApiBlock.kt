@@ -53,7 +53,10 @@ internal data class ApiBlock(
     val embed: ApiBlockEmbed? = null,
     val quote: ApiBlockText? = null,
     val bookmark: ApiBlockBookmark? = null,
+    val file: ApiBlockFile? = null,
     val image: ApiBlockImage? = null,
     val video: ApiBlockVideo? = null,
     val synced_block: ApiSyncedBlock? = null,
+    val table: ApiBlockTable? = null,
+    val table_row: ApiBlockTableRow? = null,
 )

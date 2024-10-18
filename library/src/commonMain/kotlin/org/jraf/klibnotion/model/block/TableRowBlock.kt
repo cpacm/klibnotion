@@ -7,7 +7,7 @@
  *                              /___/
  * repository.
  *
- * Copyright (C) 2021-present Benoit 'BoD' Lubek (BoD@JRAF.org)
+ * Copyright (C) 2024-present Benoit 'BoD' Lubek (BoD@JRAF.org)
  * and contributors (https://github.com/BoD/klibnotion/graphs/contributors)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,15 +23,10 @@
  * limitations under the License.
  */
 
-package org.jraf.klibnotion.internal.api.model.block
+package org.jraf.klibnotion.model.block
 
-import kotlinx.serialization.Serializable
-import org.jraf.klibnotion.internal.api.model.richtext.ApiRichText
+import org.jraf.klibnotion.model.richtext.RichTextList
 
-/**
- * See [Reference](https://developers.notion.com/reference/block).
- */
-@Serializable
-internal data class ApiBlockText(
-    val rich_text: List<ApiRichText>,
-)
+interface TableRowBlock : Block {
+    val cells: List<RichTextList>
+}

@@ -33,6 +33,7 @@ import org.jraf.klibnotion.internal.model.block.CodeBlockImpl
 import org.jraf.klibnotion.internal.model.block.DividerBlockImpl
 import org.jraf.klibnotion.internal.model.block.EmbedBlockImpl
 import org.jraf.klibnotion.internal.model.block.EquationBlockImpl
+import org.jraf.klibnotion.internal.model.block.FileBlockImpl
 import org.jraf.klibnotion.internal.model.block.Heading1BlockImpl
 import org.jraf.klibnotion.internal.model.block.Heading2BlockImpl
 import org.jraf.klibnotion.internal.model.block.Heading3BlockImpl
@@ -41,7 +42,9 @@ import org.jraf.klibnotion.internal.model.block.NumberedListItemBlockImpl
 import org.jraf.klibnotion.internal.model.block.ParagraphBlockImpl
 import org.jraf.klibnotion.internal.model.block.QuoteBlockImpl
 import org.jraf.klibnotion.internal.model.block.SyncedBlockImpl
+import org.jraf.klibnotion.internal.model.block.TableBlockImpl
 import org.jraf.klibnotion.internal.model.block.TableOfContentsBlockImpl
+import org.jraf.klibnotion.internal.model.block.TableRowBlockImpl
 import org.jraf.klibnotion.internal.model.block.ToDoBlockImpl
 import org.jraf.klibnotion.internal.model.block.ToggleBlockImpl
 import org.jraf.klibnotion.internal.model.block.VideoBlockImpl
@@ -73,14 +76,48 @@ class MutableBlockList(
     }
 
     @JvmOverloads
-    fun paragraph(richTextList: RichTextList, children: BlockListProducer? = null): MutableBlockList =
-        add(ParagraphBlockImpl(
+    fun table(
+        tableWidth: Int,
+        hasColumnHeader: Boolean = true,
+        hasRowHeader: Boolean = false,
+        children: BlockListProducer? = null,
+    ): MutableBlockList = add(
+        TableBlockImpl(
             id = "",
             created = IRRELEVANT_TIMESTAMP,
             lastEdited = IRRELEVANT_TIMESTAMP,
-            richTextList,
-            children()
-        ))
+            tableWidth = tableWidth,
+            hasColumnHeader = hasColumnHeader,
+            hasRowHeader = hasRowHeader,
+            children = children()
+        )
+    )
+
+    fun tableRow(
+        cells: List<RichTextList>,
+    ): MutableBlockList = add(
+        TableRowBlockImpl(
+            id = "",
+            created = IRRELEVANT_TIMESTAMP,
+            lastEdited = IRRELEVANT_TIMESTAMP,
+            cells = cells
+        )
+    )
+
+    @JvmOverloads
+    fun paragraph(
+        richTextList: RichTextList,
+        children: BlockListProducer? = null,
+    ): MutableBlockList =
+        add(
+            ParagraphBlockImpl(
+                id = "",
+                created = IRRELEVANT_TIMESTAMP,
+                lastEdited = IRRELEVANT_TIMESTAMP,
+                richTextList,
+                children()
+            )
+        )
 
     @JvmOverloads
     fun paragraph(
@@ -93,7 +130,6 @@ class MutableBlockList(
         children = children,
     )
 
-    @JvmOverloads
     fun heading1(richTextList: RichTextList): MutableBlockList =
         add(org.jraf.klibnotion.model.block.heading1(richTextList))
 
@@ -126,12 +162,15 @@ class MutableBlockList(
 
     @JvmOverloads
     fun bullet(richTextList: RichTextList, children: BlockListProducer? = null): MutableBlockList =
-        add(BulletedListItemBlockImpl(
-            id = "",
-            created = IRRELEVANT_TIMESTAMP,
-            lastEdited = IRRELEVANT_TIMESTAMP,
-            richTextList,
-            children()))
+        add(
+            BulletedListItemBlockImpl(
+                id = "",
+                created = IRRELEVANT_TIMESTAMP,
+                lastEdited = IRRELEVANT_TIMESTAMP,
+                richTextList,
+                children()
+            )
+        )
 
     @JvmOverloads
     fun bullet(
@@ -146,13 +185,15 @@ class MutableBlockList(
 
     @JvmOverloads
     fun number(richTextList: RichTextList, children: BlockListProducer? = null): MutableBlockList =
-        add(NumberedListItemBlockImpl(
-            id = "",
-            created = IRRELEVANT_TIMESTAMP,
-            lastEdited = IRRELEVANT_TIMESTAMP,
-            richTextList,
-            children()
-        ))
+        add(
+            NumberedListItemBlockImpl(
+                id = "",
+                created = IRRELEVANT_TIMESTAMP,
+                lastEdited = IRRELEVANT_TIMESTAMP,
+                richTextList,
+                children()
+            )
+        )
 
     @JvmOverloads
     fun number(
@@ -166,15 +207,21 @@ class MutableBlockList(
     )
 
     @JvmOverloads
-    fun toDo(richTextList: RichTextList, checked: Boolean, children: BlockListProducer? = null): MutableBlockList =
-        add(ToDoBlockImpl(
-            id = "",
-            created = IRRELEVANT_TIMESTAMP,
-            lastEdited = IRRELEVANT_TIMESTAMP,
-            richTextList,
-            checked,
-            children()
-        ))
+    fun toDo(
+        richTextList: RichTextList,
+        checked: Boolean,
+        children: BlockListProducer? = null,
+    ): MutableBlockList =
+        add(
+            ToDoBlockImpl(
+                id = "",
+                created = IRRELEVANT_TIMESTAMP,
+                lastEdited = IRRELEVANT_TIMESTAMP,
+                richTextList,
+                checked,
+                children()
+            )
+        )
 
     @JvmOverloads
     fun toDo(
@@ -191,13 +238,15 @@ class MutableBlockList(
 
     @JvmOverloads
     fun toggle(richTextList: RichTextList, children: BlockListProducer? = null): MutableBlockList =
-        add(ToggleBlockImpl(
-            id = "",
-            created = IRRELEVANT_TIMESTAMP,
-            lastEdited = IRRELEVANT_TIMESTAMP,
-            richTextList,
-            children()
-        ))
+        add(
+            ToggleBlockImpl(
+                id = "",
+                created = IRRELEVANT_TIMESTAMP,
+                lastEdited = IRRELEVANT_TIMESTAMP,
+                richTextList,
+                children()
+            )
+        )
 
     @JvmOverloads
     fun toggle(
@@ -222,7 +271,8 @@ class MutableBlockList(
         caption: String,
         linkUrl: String? = null,
         annotations: Annotations = Annotations.DEFAULT,
-    ): MutableBlockList = add(org.jraf.klibnotion.model.block.bookmark(url, caption, linkUrl, annotations))
+    ): MutableBlockList =
+        add(org.jraf.klibnotion.model.block.bookmark(url, caption, linkUrl, annotations))
 
     fun code(
         language: String,
@@ -235,7 +285,8 @@ class MutableBlockList(
         text: String,
         linkUrl: String? = null,
         annotations: Annotations = Annotations.DEFAULT,
-    ): MutableBlockList = add(org.jraf.klibnotion.model.block.code(language, text, linkUrl, annotations))
+    ): MutableBlockList =
+        add(org.jraf.klibnotion.model.block.code(language, text, linkUrl, annotations))
 
     fun equation(
         expression: String,
@@ -246,13 +297,15 @@ class MutableBlockList(
         richTextList: RichTextList,
         children: BlockListProducer? = null,
     ): MutableBlockList =
-        add(QuoteBlockImpl(
-            id = "",
-            created = IRRELEVANT_TIMESTAMP,
-            lastEdited = IRRELEVANT_TIMESTAMP,
-            text = richTextList,
-            children = children()
-        ))
+        add(
+            QuoteBlockImpl(
+                id = "",
+                created = IRRELEVANT_TIMESTAMP,
+                lastEdited = IRRELEVANT_TIMESTAMP,
+                text = richTextList,
+                children = children()
+            )
+        )
 
 
     @JvmOverloads
@@ -273,14 +326,16 @@ class MutableBlockList(
         richTextList: RichTextList,
         icon: EmojiOrFile? = null,
         children: BlockListProducer? = null,
-    ): MutableBlockList = add(CalloutBlockImpl(
-        id = "",
-        created = IRRELEVANT_TIMESTAMP,
-        lastEdited = IRRELEVANT_TIMESTAMP,
-        children = children(),
-        text = richTextList,
-        icon = icon
-    ))
+    ): MutableBlockList = add(
+        CalloutBlockImpl(
+            id = "",
+            created = IRRELEVANT_TIMESTAMP,
+            lastEdited = IRRELEVANT_TIMESTAMP,
+            children = children(),
+            text = richTextList,
+            icon = icon
+        )
+    )
 
     @JvmOverloads
     fun callout(
@@ -326,6 +381,19 @@ class MutableBlockList(
         annotations: Annotations = Annotations.DEFAULT,
     ) = add(org.jraf.klibnotion.model.block.video(url, caption, linkUrl, annotations))
 
+    fun file(
+        url: String,
+        caption: RichTextList? = null,
+    ) = add(org.jraf.klibnotion.model.block.file(url, caption))
+
+    @JvmOverloads
+    fun file(
+        url: String,
+        caption: String? = null,
+        linkUrl: String? = null,
+        annotations: Annotations = Annotations.DEFAULT,
+    ) = add(org.jraf.klibnotion.model.block.file(url, caption, linkUrl, annotations))
+
     fun syncedBlock(syncedFrom: UuidString): MutableBlockList =
         add(org.jraf.klibnotion.model.block.syncedBlock(syncedFrom))
 }
@@ -339,6 +407,26 @@ internal operator fun BlockListProducer?.invoke() = this?.let { producer ->
 
 fun content(content: BlockListProducer) = content()
 
+fun table(
+    tableWidth: Int,
+    hasColumnHeader: Boolean = true,
+    hasRowHeader: Boolean = false,
+): Block = TableBlockImpl(
+    id = "",
+    created = IRRELEVANT_TIMESTAMP,
+    lastEdited = IRRELEVANT_TIMESTAMP,
+    tableWidth = tableWidth,
+    hasColumnHeader = hasColumnHeader,
+    hasRowHeader = hasRowHeader,
+    null,
+)
+
+fun tableRow(cells: List<RichTextList>): Block = TableRowBlockImpl(
+    id = "",
+    created = IRRELEVANT_TIMESTAMP,
+    lastEdited = IRRELEVANT_TIMESTAMP,
+    cells = cells
+)
 
 fun paragraph(richTextList: RichTextList): Block = ParagraphBlockImpl(
     id = "",
@@ -587,6 +675,28 @@ fun tableOfContents(): Block = TableOfContentsBlockImpl(
     id = "",
     created = IRRELEVANT_TIMESTAMP,
     lastEdited = IRRELEVANT_TIMESTAMP
+)
+
+fun file(
+    url: String,
+    caption: RichTextList? = null,
+): Block = FileBlockImpl(
+    id = "",
+    created = IRRELEVANT_TIMESTAMP,
+    lastEdited = IRRELEVANT_TIMESTAMP,
+    file = FileImpl(name = "file", url = url),
+    caption = caption,
+)
+
+@JvmOverloads
+fun file(
+    url: String,
+    caption: String? = null,
+    linkUrl: String? = null,
+    annotations: Annotations = Annotations.DEFAULT,
+): Block = file(
+    url = url,
+    caption = caption?.let { RichTextList().text(it, linkUrl, annotations) },
 )
 
 fun image(

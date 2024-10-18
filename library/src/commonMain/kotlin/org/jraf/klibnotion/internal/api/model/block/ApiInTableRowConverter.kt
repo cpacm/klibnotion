@@ -25,13 +25,16 @@
 
 package org.jraf.klibnotion.internal.api.model.block
 
-import kotlinx.serialization.Serializable
-import org.jraf.klibnotion.internal.api.model.richtext.ApiRichText
+import org.jraf.klibnotion.internal.api.model.ApiConverter
+import org.jraf.klibnotion.internal.model.file.FileImpl
+import org.jraf.klibnotion.model.file.File
 
-/**
- * See [Reference](https://developers.notion.com/reference/block).
- */
-@Serializable
-internal data class ApiBlockText(
-    val rich_text: List<ApiRichText>,
-)
+internal object ApiInTableRowConverter : ApiConverter<ApiBlockFile, File>() {
+    override fun apiToModel(apiModel: ApiBlockFile): File {
+        return when (apiModel.type) {
+            "file" -> FileImpl(name = null, url = apiModel.file!!.url)
+            "external" -> FileImpl(name = null, url = apiModel.external!!.url)
+            else -> throw RuntimeException()
+        }
+    }
+}

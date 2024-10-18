@@ -30,6 +30,7 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObjectBuilder
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
+import kotlinx.serialization.json.putJsonArray
 import kotlinx.serialization.json.putJsonObject
 import org.jraf.klibnotion.internal.api.model.ApiConverter
 import org.jraf.klibnotion.internal.api.model.base.ApiOutEmojiOrFileConverter
@@ -45,6 +46,7 @@ import org.jraf.klibnotion.model.block.CodeBlock
 import org.jraf.klibnotion.model.block.DividerBlock
 import org.jraf.klibnotion.model.block.EmbedBlock
 import org.jraf.klibnotion.model.block.EquationBlock
+import org.jraf.klibnotion.model.block.FileBlock
 import org.jraf.klibnotion.model.block.Heading1Block
 import org.jraf.klibnotion.model.block.Heading2Block
 import org.jraf.klibnotion.model.block.Heading3Block
@@ -53,7 +55,9 @@ import org.jraf.klibnotion.model.block.NumberedListItemBlock
 import org.jraf.klibnotion.model.block.ParagraphBlock
 import org.jraf.klibnotion.model.block.QuoteBlock
 import org.jraf.klibnotion.model.block.SyncedBlock
+import org.jraf.klibnotion.model.block.TableBlock
 import org.jraf.klibnotion.model.block.TableOfContentsBlock
+import org.jraf.klibnotion.model.block.TableRowBlock
 import org.jraf.klibnotion.model.block.ToDoBlock
 import org.jraf.klibnotion.model.block.ToggleBlock
 import org.jraf.klibnotion.model.block.UnknownTypeBlock
@@ -85,7 +89,10 @@ internal object ApiOutBlockConverter : ApiConverter<JsonElement, Block>() {
                 is TableOfContentsBlock -> "table_of_contents"
                 is ImageBlock -> "image"
                 is VideoBlock -> "video"
+                is FileBlock -> "file"
                 is SyncedBlock -> "synced_block"
+                is TableBlock -> "table"
+                is TableRowBlock -> "table_row"
 
                 is UnknownTypeBlock -> throw IllegalStateException("Unknown type: ${model.type}")
                 else -> throw IllegalStateException("Converter not implemented for ${model::class.simpleName}")
@@ -93,36 +100,40 @@ internal object ApiOutBlockConverter : ApiConverter<JsonElement, Block>() {
             put("type", type)
             putJsonObject(type) {
                 when (model) {
-                    is Heading1Block -> model.text?.let { text(it) }
-                    is Heading2Block -> model.text?.let { text(it) }
-                    is Heading3Block -> model.text?.let { text(it) }
-                    is BulletedListItemBlock -> model.text?.let { text(it) }
-                    is NumberedListItemBlock -> model.text?.let { text(it) }
-                    is ToggleBlock -> model.text?.let { text(it) }
-                    is ParagraphBlock -> model.text?.let { text(it) }
-                    is QuoteBlock -> model.text?.let { text(it) }
+                    is Heading1Block -> model.text?.let { richText(it) }
+                    is Heading2Block -> model.text?.let { richText(it) }
+                    is Heading3Block -> model.text?.let { richText(it) }
+                    is BulletedListItemBlock -> model.text?.let { richText(it) }
+                    is NumberedListItemBlock -> model.text?.let { richText(it) }
+                    is ToggleBlock -> model.text?.let { richText(it) }
+                    is ParagraphBlock -> model.text?.let { richText(it) }
+                    is QuoteBlock -> model.text?.let { richText(it) }
                     is ToDoBlock -> {
-                        model.text?.let { text(it) }
+                        model.text?.let { richText(it) }
                         put("checked", model.checked)
                     }
+
                     is CodeBlock -> {
-                        model.text?.let { text(it) }
+                        model.text?.let { richText(it) }
                         put("language", model.language)
                     }
+
                     is BookmarkBlock -> {
                         put("url", model.url)
                         model.caption?.let {
                             put("caption", it.modelToApi(ApiOutRichTextListConverter))
                         }
                     }
+
                     is EquationBlock -> put("expression", model.expression)
                     is EmbedBlock -> put("url", model.url)
                     is CalloutBlock -> {
-                        model.text?.let { text(it) }
+                        model.text?.let { richText(it) }
                         model.icon?.let {
                             put("icon", it.modelToApi(ApiOutEmojiOrFileConverter))
                         }
                     }
+
                     is ImageBlock -> {
                         model.caption?.let {
                             put("caption", it.modelToApi(ApiOutRichTextListConverter))
@@ -131,6 +142,16 @@ internal object ApiOutBlockConverter : ApiConverter<JsonElement, Block>() {
                             put("url", model.image.url)
                         }
                     }
+
+                    is FileBlock -> {
+                        model.caption?.let {
+                            put("caption", it.modelToApi(ApiOutRichTextListConverter))
+                        }
+                        putJsonObject("external") {
+                            put("url", model.file.url)
+                        }
+                    }
+
                     is VideoBlock -> {
                         model.caption?.let {
                             put("caption", it.modelToApi(ApiOutRichTextListConverter))
@@ -139,14 +160,26 @@ internal object ApiOutBlockConverter : ApiConverter<JsonElement, Block>() {
                             put("url", model.video.url)
                         }
                     }
+
                     is SyncedBlock -> {
                         putJsonObject("synced_from") {
                             put("block_id", model.syncedFrom)
                         }
                     }
+
                     is ChildPageBlock, is ChildDatabaseBlock -> {
                         put("type", "page_id")
                         put("page_id", model.id)
+                    }
+
+                    is TableBlock -> {
+                        put("table_width", model.tableWidth)
+                        put("has_column_header", model.hasColumnHeader)
+                        put("has_row_header", model.hasRowHeader)
+                    }
+
+                    is TableRowBlock -> {
+                        model.cells(this@putJsonObject)
                     }
 
                     is UnknownTypeBlock,
@@ -156,12 +189,23 @@ internal object ApiOutBlockConverter : ApiConverter<JsonElement, Block>() {
                     }
                 }
                 model.children?.let {
-                    if (it.isNotEmpty()) put("children", JsonArray(it.modelToApi(ApiOutBlockConverter)))
+                    if (it.isNotEmpty()) put(
+                        "children",
+                        JsonArray(it.modelToApi(ApiOutBlockConverter))
+                    )
                 }
             }
         }
     }
 
-    private fun JsonObjectBuilder.text(richTextList: RichTextList) =
-        put("text", richTextList.modelToApi(ApiOutRichTextListConverter))
+    private fun TableRowBlock.cells(jsonBuilder: JsonObjectBuilder) {
+        jsonBuilder.putJsonArray("cells") {
+            cells.map { row ->
+                row.modelToApi(ApiOutRichTextListConverter)
+            }
+        }
+    }
+
+    private fun JsonObjectBuilder.richText(richTextList: RichTextList) =
+        put("rich_text", richTextList.modelToApi(ApiOutRichTextListConverter))
 }

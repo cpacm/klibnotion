@@ -26,12 +26,12 @@
 package org.jraf.klibnotion.internal.api.model.block
 
 import kotlinx.serialization.Serializable
+import org.jraf.klibnotion.internal.api.model.file.ApiFile
 import org.jraf.klibnotion.internal.api.model.richtext.ApiRichText
 
-/**
- * See [Reference](https://developers.notion.com/reference/block).
- */
 @Serializable
-internal data class ApiBlockText(
-    val rich_text: List<ApiRichText>,
+internal data class ApiBlockTable(
+    val table_width: Int,
+    val has_column_header: Boolean,
+    val has_row_header: Boolean,
 )

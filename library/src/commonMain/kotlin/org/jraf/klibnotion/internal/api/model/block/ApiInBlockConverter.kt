@@ -29,6 +29,7 @@ import org.jraf.klibnotion.internal.api.model.ApiConverter
 import org.jraf.klibnotion.internal.api.model.apiToModel
 import org.jraf.klibnotion.internal.api.model.base.ApiEmojiOrFileConverter
 import org.jraf.klibnotion.internal.api.model.date.ApiDateStringConverter
+import org.jraf.klibnotion.internal.api.model.richtext.ApiRichText
 import org.jraf.klibnotion.internal.api.model.richtext.ApiRichTextConverter
 import org.jraf.klibnotion.internal.model.block.BookmarkBlockImpl
 import org.jraf.klibnotion.internal.model.block.BulletedListItemBlockImpl
@@ -39,6 +40,7 @@ import org.jraf.klibnotion.internal.model.block.CodeBlockImpl
 import org.jraf.klibnotion.internal.model.block.DividerBlockImpl
 import org.jraf.klibnotion.internal.model.block.EmbedBlockImpl
 import org.jraf.klibnotion.internal.model.block.EquationBlockImpl
+import org.jraf.klibnotion.internal.model.block.FileBlockImpl
 import org.jraf.klibnotion.internal.model.block.Heading1BlockImpl
 import org.jraf.klibnotion.internal.model.block.Heading2BlockImpl
 import org.jraf.klibnotion.internal.model.block.Heading3BlockImpl
@@ -47,12 +49,16 @@ import org.jraf.klibnotion.internal.model.block.NumberedListItemBlockImpl
 import org.jraf.klibnotion.internal.model.block.ParagraphBlockImpl
 import org.jraf.klibnotion.internal.model.block.QuoteBlockImpl
 import org.jraf.klibnotion.internal.model.block.SyncedBlockImpl
+import org.jraf.klibnotion.internal.model.block.TableBlockImpl
 import org.jraf.klibnotion.internal.model.block.TableOfContentsBlockImpl
+import org.jraf.klibnotion.internal.model.block.TableRowBlockImpl
 import org.jraf.klibnotion.internal.model.block.ToDoBlockImpl
 import org.jraf.klibnotion.internal.model.block.ToggleBlockImpl
 import org.jraf.klibnotion.internal.model.block.UnknownTypeBlockImpl
 import org.jraf.klibnotion.internal.model.block.VideoBlockImpl
 import org.jraf.klibnotion.model.block.Block
+import org.jraf.klibnotion.model.block.TableRowBlock
+import org.jraf.klibnotion.model.richtext.RichText
 import org.jraf.klibnotion.model.richtext.RichTextList
 
 internal object ApiInBlockConverter : ApiConverter<ApiBlock, Block>() {
@@ -200,6 +206,14 @@ internal object ApiInBlockConverter : ApiConverter<ApiBlock, Block>() {
                 lastEdited = lastEdited,
             )
 
+            "file" -> FileBlockImpl(
+                id = id,
+                created = created,
+                lastEdited = lastEdited,
+                caption = apiModel.file!!.toRichTextList(),
+                file = apiModel.file.apiToModel(ApiInFileConverter),
+            )
+
             "image" -> ImageBlockImpl(
                 id = id,
                 created = created,
@@ -223,6 +237,23 @@ internal object ApiInBlockConverter : ApiConverter<ApiBlock, Block>() {
                 syncedFrom = apiModel.synced_block?.synced_from?.block_id,
             )
 
+            "table" -> TableBlockImpl(
+                id = id,
+                created = created,
+                lastEdited = lastEdited,
+                tableWidth = apiModel.table?.table_width ?: 0,
+                hasColumnHeader = apiModel.table?.has_column_header ?: true,
+                hasRowHeader = apiModel.table?.has_row_header ?: false,
+                children = children
+            )
+
+            "table_row" -> TableRowBlockImpl(
+                id = id,
+                created = created,
+                lastEdited = lastEdited,
+                cells = toRichTextList(apiModel.table_row!!.cells)
+            )
+
             else -> UnknownTypeBlockImpl(
                 id = id,
                 created = created,
@@ -232,15 +263,28 @@ internal object ApiInBlockConverter : ApiConverter<ApiBlock, Block>() {
         }
     }
 
-    private fun ApiBlockText?.toRichTextList() = RichTextList(this!!.text.apiToModel(ApiRichTextConverter))
-    private fun ApiBlockTodo?.toRichTextList() = RichTextList(this!!.text.apiToModel(ApiRichTextConverter))
-    private fun ApiBlockCode.toRichTextList() = RichTextList(this.text.apiToModel(ApiRichTextConverter))
-    private fun ApiBlockCallout.toRichTextList() = RichTextList(this.text.apiToModel(ApiRichTextConverter))
+    private fun toRichTextList(cells: List<List<ApiRichText>>): List<RichTextList> {
+        val results = mutableListOf<RichTextList>()
+
+        cells.forEach { cell ->
+            val richTexts = cell.apiToModel(ApiRichTextConverter)
+            results.add(RichTextList(richTexts))
+        }
+        return results
+    }
+
+    private fun ApiBlockText?.toRichTextList() = RichTextList(this!!.rich_text.apiToModel(ApiRichTextConverter))
+    private fun ApiBlockTodo?.toRichTextList() = RichTextList(this!!.rich_text.apiToModel(ApiRichTextConverter))
+    private fun ApiBlockCode.toRichTextList() = RichTextList(this.rich_text.apiToModel(ApiRichTextConverter))
+    private fun ApiBlockCallout.toRichTextList() = RichTextList(this.rich_text.apiToModel(ApiRichTextConverter))
     private fun ApiBlockBookmark.toRichTextList() = RichTextList(this.caption.apiToModel(ApiRichTextConverter))
     private fun ApiBlockImage.toRichTextList() =
         this.caption?.let { RichTextList(it.apiToModel(ApiRichTextConverter)) }
 
     private fun ApiBlockVideo.toRichTextList() =
+        this.caption?.let { RichTextList(it.apiToModel(ApiRichTextConverter)) }
+
+    private fun ApiBlockFile.toRichTextList() =
         this.caption?.let { RichTextList(it.apiToModel(ApiRichTextConverter)) }
 
 }

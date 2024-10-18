@@ -23,15 +23,22 @@
  * limitations under the License.
  */
 
-package org.jraf.klibnotion.internal.api.model.block
+package org.jraf.klibnotion.internal.model.block
 
-import kotlinx.serialization.Serializable
-import org.jraf.klibnotion.internal.api.model.richtext.ApiRichText
+import org.jraf.klibnotion.model.base.UuidString
+import org.jraf.klibnotion.model.block.Block
+import org.jraf.klibnotion.model.block.ParagraphBlock
+import org.jraf.klibnotion.model.block.TableBlock
+import org.jraf.klibnotion.model.block.TableRowBlock
+import org.jraf.klibnotion.model.date.Timestamp
+import org.jraf.klibnotion.model.richtext.RichText
+import org.jraf.klibnotion.model.richtext.RichTextList
 
-/**
- * See [Reference](https://developers.notion.com/reference/block).
- */
-@Serializable
-internal data class ApiBlockText(
-    val rich_text: List<ApiRichText>,
-)
+internal data class TableRowBlockImpl(
+    override val id: UuidString,
+    override val created: Timestamp,
+    override val lastEdited: Timestamp,
+    override val cells: List<RichTextList>,
+) : TableRowBlock {
+    override val children: List<Block>? = null
+}
