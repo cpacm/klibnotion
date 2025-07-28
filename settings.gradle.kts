@@ -1,13 +1,13 @@
-rootProject.name = "klibnotion-root"
+rootProject.name = "klibnotion"
 
 include(":library")
 project(":library").name = "klibnotion"
 
 // Include all the sample modules from the "samples" directory
-file("samples").listFiles()!!.forEach { dir ->
-    include(dir.name)
-    project(":${dir.name}").apply {
-        projectDir = dir
-        name = dir.name
-    }
-}
+//file("samples").listFiles()!!.forEach { dir ->
+//    include(dir.name)
+//    project(":${dir.name}").apply {
+//        projectDir = dir
+//        name = dir.name
+//    }
+//}
