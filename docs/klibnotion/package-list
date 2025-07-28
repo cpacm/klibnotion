@@ -188,6 +188,8 @@ $dokka.location:org.jraf.klibnotion.model.block//content/#kotlin.Function1[org.j
 $dokka.location:org.jraf.klibnotion.model.block//divider/#/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/divider.html
 $dokka.location:org.jraf.klibnotion.model.block//embed/#kotlin.String/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/embed.html
 $dokka.location:org.jraf.klibnotion.model.block//equation/#kotlin.String/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/equation.html
+$dokka.location:org.jraf.klibnotion.model.block//file/#kotlin.String#kotlin.String?#kotlin.String?#org.jraf.klibnotion.model.richtext.Annotations/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/file.html
+$dokka.location:org.jraf.klibnotion.model.block//file/#kotlin.String#org.jraf.klibnotion.model.richtext.RichTextList?/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/file.html
 $dokka.location:org.jraf.klibnotion.model.block//heading1/#kotlin.String#kotlin.String?#org.jraf.klibnotion.model.richtext.Annotations/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/heading1.html
 $dokka.location:org.jraf.klibnotion.model.block//heading1/#org.jraf.klibnotion.model.richtext.RichTextList/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/heading1.html
 $dokka.location:org.jraf.klibnotion.model.block//heading2/#kotlin.String#kotlin.String?#org.jraf.klibnotion.model.richtext.Annotations/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/heading2.html
@@ -203,7 +205,9 @@ $dokka.location:org.jraf.klibnotion.model.block//paragraph/#org.jraf.klibnotion.
 $dokka.location:org.jraf.klibnotion.model.block//quote/#kotlin.String#kotlin.String?#org.jraf.klibnotion.model.richtext.Annotations/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/quote.html
 $dokka.location:org.jraf.klibnotion.model.block//quote/#org.jraf.klibnotion.model.richtext.RichTextList/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/quote.html
 $dokka.location:org.jraf.klibnotion.model.block//syncedBlock/#kotlin.String/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/synced-block.html
+$dokka.location:org.jraf.klibnotion.model.block//table/#kotlin.Int#kotlin.Boolean#kotlin.Boolean/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/table.html
 $dokka.location:org.jraf.klibnotion.model.block//tableOfContents/#/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/table-of-contents.html
+$dokka.location:org.jraf.klibnotion.model.block//tableRow/#kotlin.collections.ArrayList[org.jraf.klibnotion.model.richtext.RichTextList]/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/table-row.html
 $dokka.location:org.jraf.klibnotion.model.block//toDo/#kotlin.String#kotlin.Boolean#kotlin.String?#org.jraf.klibnotion.model.richtext.Annotations/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/to-do.html
 $dokka.location:org.jraf.klibnotion.model.block//toDo/#org.jraf.klibnotion.model.richtext.RichTextList#kotlin.Boolean/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/to-do.html
 $dokka.location:org.jraf.klibnotion.model.block//toggle/#kotlin.String#kotlin.String?#org.jraf.klibnotion.model.richtext.Annotations/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/toggle.html
@@ -236,6 +240,9 @@ $dokka.location:org.jraf.klibnotion.model.block/EmbedBlock///PointingToDeclarati
 $dokka.location:org.jraf.klibnotion.model.block/EmbedBlock/url/#/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-embed-block/url.html
 $dokka.location:org.jraf.klibnotion.model.block/EquationBlock///PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-equation-block/index.html
 $dokka.location:org.jraf.klibnotion.model.block/EquationBlock/expression/#/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-equation-block/expression.html
+$dokka.location:org.jraf.klibnotion.model.block/FileBlock///PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-file-block/index.html
+$dokka.location:org.jraf.klibnotion.model.block/FileBlock/caption/#/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-file-block/caption.html
+$dokka.location:org.jraf.klibnotion.model.block/FileBlock/file/#/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-file-block/file.html
 $dokka.location:org.jraf.klibnotion.model.block/Heading1Block///PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-heading1-block/index.html
 $dokka.location:org.jraf.klibnotion.model.block/Heading1Block/text/#/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-heading1-block/text.html
 $dokka.location:org.jraf.klibnotion.model.block/Heading2Block///PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-heading2-block/index.html
@@ -258,6 +265,8 @@ $dokka.location:org.jraf.klibnotion.model.block/MutableBlockList/code/#kotlin.St
 $dokka.location:org.jraf.klibnotion.model.block/MutableBlockList/divider/#/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-mutable-block-list/divider.html
 $dokka.location:org.jraf.klibnotion.model.block/MutableBlockList/embed/#kotlin.String/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-mutable-block-list/embed.html
 $dokka.location:org.jraf.klibnotion.model.block/MutableBlockList/equation/#kotlin.String/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-mutable-block-list/equation.html
+$dokka.location:org.jraf.klibnotion.model.block/MutableBlockList/file/#kotlin.String#kotlin.String?#kotlin.String?#org.jraf.klibnotion.model.richtext.Annotations/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-mutable-block-list/file.html
+$dokka.location:org.jraf.klibnotion.model.block/MutableBlockList/file/#kotlin.String#org.jraf.klibnotion.model.richtext.RichTextList?/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-mutable-block-list/file.html
 $dokka.location:org.jraf.klibnotion.model.block/MutableBlockList/heading1/#kotlin.String#kotlin.String?#org.jraf.klibnotion.model.richtext.Annotations/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-mutable-block-list/heading1.html
 $dokka.location:org.jraf.klibnotion.model.block/MutableBlockList/heading1/#org.jraf.klibnotion.model.richtext.RichTextList/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-mutable-block-list/heading1.html
 $dokka.location:org.jraf.klibnotion.model.block/MutableBlockList/heading2/#kotlin.String#kotlin.String?#org.jraf.klibnotion.model.richtext.Annotations/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-mutable-block-list/heading2.html
@@ -273,7 +282,9 @@ $dokka.location:org.jraf.klibnotion.model.block/MutableBlockList/paragraph/#org.
 $dokka.location:org.jraf.klibnotion.model.block/MutableBlockList/quote/#kotlin.String#kotlin.String?#org.jraf.klibnotion.model.richtext.Annotations#kotlin.Function1[org.jraf.klibnotion.model.block.MutableBlockList,kotlin.Unit]?/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-mutable-block-list/quote.html
 $dokka.location:org.jraf.klibnotion.model.block/MutableBlockList/quote/#org.jraf.klibnotion.model.richtext.RichTextList#kotlin.Function1[org.jraf.klibnotion.model.block.MutableBlockList,kotlin.Unit]?/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-mutable-block-list/quote.html
 $dokka.location:org.jraf.klibnotion.model.block/MutableBlockList/syncedBlock/#kotlin.String/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-mutable-block-list/synced-block.html
+$dokka.location:org.jraf.klibnotion.model.block/MutableBlockList/table/#kotlin.Int#kotlin.Boolean#kotlin.Boolean#kotlin.Function1[org.jraf.klibnotion.model.block.MutableBlockList,kotlin.Unit]?/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-mutable-block-list/table.html
 $dokka.location:org.jraf.klibnotion.model.block/MutableBlockList/tableOfContents/#/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-mutable-block-list/table-of-contents.html
+$dokka.location:org.jraf.klibnotion.model.block/MutableBlockList/tableRow/#kotlin.collections.ArrayList[org.jraf.klibnotion.model.richtext.RichTextList]/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-mutable-block-list/table-row.html
 $dokka.location:org.jraf.klibnotion.model.block/MutableBlockList/toDo/#kotlin.String#kotlin.Boolean#kotlin.String?#org.jraf.klibnotion.model.richtext.Annotations#kotlin.Function1[org.jraf.klibnotion.model.block.MutableBlockList,kotlin.Unit]?/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-mutable-block-list/to-do.html
 $dokka.location:org.jraf.klibnotion.model.block/MutableBlockList/toDo/#org.jraf.klibnotion.model.richtext.RichTextList#kotlin.Boolean#kotlin.Function1[org.jraf.klibnotion.model.block.MutableBlockList,kotlin.Unit]?/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-mutable-block-list/to-do.html
 $dokka.location:org.jraf.klibnotion.model.block/MutableBlockList/toggle/#kotlin.String#kotlin.String?#org.jraf.klibnotion.model.richtext.Annotations#kotlin.Function1[org.jraf.klibnotion.model.block.MutableBlockList,kotlin.Unit]?/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-mutable-block-list/toggle.html
@@ -288,7 +299,13 @@ $dokka.location:org.jraf.klibnotion.model.block/QuoteBlock///PointingToDeclarati
 $dokka.location:org.jraf.klibnotion.model.block/QuoteBlock/text/#/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-quote-block/text.html
 $dokka.location:org.jraf.klibnotion.model.block/SyncedBlock///PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-synced-block/index.html
 $dokka.location:org.jraf.klibnotion.model.block/SyncedBlock/syncedFrom/#/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-synced-block/synced-from.html
+$dokka.location:org.jraf.klibnotion.model.block/TableBlock///PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-table-block/index.html
+$dokka.location:org.jraf.klibnotion.model.block/TableBlock/hasColumnHeader/#/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-table-block/has-column-header.html
+$dokka.location:org.jraf.klibnotion.model.block/TableBlock/hasRowHeader/#/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-table-block/has-row-header.html
+$dokka.location:org.jraf.klibnotion.model.block/TableBlock/tableWidth/#/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-table-block/table-width.html
 $dokka.location:org.jraf.klibnotion.model.block/TableOfContentsBlock///PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-table-of-contents-block/index.html
+$dokka.location:org.jraf.klibnotion.model.block/TableRowBlock///PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-table-row-block/index.html
+$dokka.location:org.jraf.klibnotion.model.block/TableRowBlock/cells/#/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-table-row-block/cells.html
 $dokka.location:org.jraf.klibnotion.model.block/ToDoBlock///PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-to-do-block/index.html
 $dokka.location:org.jraf.klibnotion.model.block/ToDoBlock/checked/#/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-to-do-block/checked.html
 $dokka.location:org.jraf.klibnotion.model.block/ToDoBlock/text/#/PointingToDeclaration/klibnotion/org.jraf.klibnotion.model.block/-to-do-block/text.html

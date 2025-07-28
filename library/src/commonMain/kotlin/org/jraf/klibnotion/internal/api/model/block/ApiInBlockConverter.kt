@@ -263,8 +263,8 @@ internal object ApiInBlockConverter : ApiConverter<ApiBlock, Block>() {
         }
     }
 
-    private fun toRichTextList(cells: List<List<ApiRichText>>): List<RichTextList> {
-        val results = mutableListOf<RichTextList>()
+    private fun toRichTextList(cells: List<List<ApiRichText>>): ArrayList<RichTextList> {
+        val results = arrayListOf<RichTextList>()
 
         cells.forEach { cell ->
             val richTexts = cell.apiToModel(ApiRichTextConverter)

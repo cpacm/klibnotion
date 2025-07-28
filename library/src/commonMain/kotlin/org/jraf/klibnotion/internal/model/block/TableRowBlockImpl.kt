@@ -38,7 +38,7 @@ internal data class TableRowBlockImpl(
     override val id: UuidString,
     override val created: Timestamp,
     override val lastEdited: Timestamp,
-    override val cells: List<RichTextList>,
+    override val cells: ArrayList<RichTextList>,
 ) : TableRowBlock {
     override val children: List<Block>? = null
 }

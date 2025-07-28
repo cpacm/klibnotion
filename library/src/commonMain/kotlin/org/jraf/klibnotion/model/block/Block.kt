@@ -94,7 +94,7 @@ class MutableBlockList(
     )
 
     fun tableRow(
-        cells: List<RichTextList>,
+        cells: ArrayList<RichTextList>,
     ): MutableBlockList = add(
         TableRowBlockImpl(
             id = "",
@@ -421,7 +421,7 @@ fun table(
     null,
 )
 
-fun tableRow(cells: List<RichTextList>): Block = TableRowBlockImpl(
+fun tableRow(cells: ArrayList<RichTextList>): Block = TableRowBlockImpl(
     id = "",
     created = IRRELEVANT_TIMESTAMP,
     lastEdited = IRRELEVANT_TIMESTAMP,

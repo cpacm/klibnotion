@@ -36,7 +36,6 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
-import io.ktor.util.InternalAPI
 import io.ktor.util.encodeBase64
 import kotlinx.serialization.json.JsonElement
 import org.jraf.klibnotion.internal.api.model.block.ApiAppendBlocksParameters
@@ -75,7 +74,6 @@ internal class NotionService(private val httpClient: HttpClient) {
 
     // region OAuth
 
-    @OptIn(InternalAPI::class)
     suspend fun getOAuthAccessToken(
         clientId: String,
         clientSecret: String,
@@ -91,7 +89,6 @@ internal class NotionService(private val httpClient: HttpClient) {
         }.body()
     }
 
-    @OptIn(InternalAPI::class)
     private fun getClientSecretBase64(clientId: String, clientSecret: String): String {
         // TODO Don't depend on private encodeBase64 KTOR API
         val clientSecretBase64 = "$clientId:$clientSecret".encodeBase64()

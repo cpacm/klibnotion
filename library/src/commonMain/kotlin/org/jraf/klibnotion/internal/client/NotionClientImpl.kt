@@ -160,9 +160,9 @@ internal class NotionClientImpl(
             }
             // Notion API is very slow, so...
             install(HttpTimeout) {
-                requestTimeoutMillis = HttpTimeout.INFINITE_TIMEOUT_MS
-                connectTimeoutMillis = HttpTimeout.INFINITE_TIMEOUT_MS
-                socketTimeoutMillis = HttpTimeout.INFINITE_TIMEOUT_MS
+                requestTimeoutMillis = 10 * 60 * 1000L // 10 minutes
+                connectTimeoutMillis = 10 * 60 * 1000L
+                socketTimeoutMillis = 10 * 60 * 1000L
             }
             engine {
                 // Setup a proxy if requested

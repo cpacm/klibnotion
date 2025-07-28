@@ -28,5 +28,5 @@ package org.jraf.klibnotion.model.block
 import org.jraf.klibnotion.model.richtext.RichTextList
 
 interface TableRowBlock : Block {
-    val cells: List<RichTextList>
+    val cells: ArrayList<RichTextList>
 }
