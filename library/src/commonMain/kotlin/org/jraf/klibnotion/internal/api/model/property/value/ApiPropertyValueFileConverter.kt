@@ -26,12 +26,21 @@
 package org.jraf.klibnotion.internal.api.model.property.value
 
 import org.jraf.klibnotion.internal.api.model.ApiConverter
+import org.jraf.klibnotion.internal.model.file.ExternalFileImpl
 import org.jraf.klibnotion.internal.model.file.FileImpl
+import org.jraf.klibnotion.internal.model.file.UploadFileImpl
 import org.jraf.klibnotion.model.file.File
 
 internal object ApiPropertyValueFileConverter : ApiConverter<ApiPropertyValueFile, File>() {
-    override fun apiToModel(apiModel: ApiPropertyValueFile) = FileImpl(
-        name = apiModel.name,
-        url = apiModel.file?.url ?: apiModel.external?.url ?: "Unknown URL"
-    )
+    override fun apiToModel(apiModel: ApiPropertyValueFile):File{
+        return when (apiModel.type) {
+            "file" -> FileImpl(type = apiModel.type, file = apiModel.file)
+            "external" -> ExternalFileImpl(type = apiModel.type, external = apiModel.external)
+            "file_upload" -> UploadFileImpl(
+                type = apiModel.type,
+                file_upload = apiModel.file_upload
+            )
+            else -> throw RuntimeException()
+        }
+    }
 }

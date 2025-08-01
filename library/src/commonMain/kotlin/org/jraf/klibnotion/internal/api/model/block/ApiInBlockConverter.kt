@@ -31,6 +31,7 @@ import org.jraf.klibnotion.internal.api.model.base.ApiEmojiOrFileConverter
 import org.jraf.klibnotion.internal.api.model.date.ApiDateStringConverter
 import org.jraf.klibnotion.internal.api.model.richtext.ApiRichText
 import org.jraf.klibnotion.internal.api.model.richtext.ApiRichTextConverter
+import org.jraf.klibnotion.internal.model.block.AudioBlockImpl
 import org.jraf.klibnotion.internal.model.block.BookmarkBlockImpl
 import org.jraf.klibnotion.internal.model.block.BulletedListItemBlockImpl
 import org.jraf.klibnotion.internal.model.block.CalloutBlockImpl
@@ -47,6 +48,7 @@ import org.jraf.klibnotion.internal.model.block.Heading3BlockImpl
 import org.jraf.klibnotion.internal.model.block.ImageBlockImpl
 import org.jraf.klibnotion.internal.model.block.NumberedListItemBlockImpl
 import org.jraf.klibnotion.internal.model.block.ParagraphBlockImpl
+import org.jraf.klibnotion.internal.model.block.PdfBlockImpl
 import org.jraf.klibnotion.internal.model.block.QuoteBlockImpl
 import org.jraf.klibnotion.internal.model.block.SyncedBlockImpl
 import org.jraf.klibnotion.internal.model.block.TableBlockImpl
@@ -222,12 +224,27 @@ internal object ApiInBlockConverter : ApiConverter<ApiBlock, Block>() {
                 image = apiModel.image.apiToModel(ApiInImageFileConverter)
             )
 
+            "audio" -> AudioBlockImpl(
+                id = id,
+                created = created,
+                lastEdited = lastEdited,
+                audio = apiModel.audio!!.apiToModel(ApiInAudioFileConverter)
+            )
+
             "video" -> VideoBlockImpl(
                 id = id,
                 created = created,
                 lastEdited = lastEdited,
                 caption = apiModel.video!!.toRichTextList(),
                 video = apiModel.video.apiToModel(ApiInVideoFileConverter)
+            )
+
+            "pdf" -> PdfBlockImpl(
+                id = id,
+                created = created,
+                lastEdited = lastEdited,
+                caption = apiModel.pdf!!.toRichTextList(),
+                pdf = apiModel.pdf.apiToModel(ApiInPdfFileConverter)
             )
 
             "synced_block" -> SyncedBlockImpl(
@@ -273,15 +290,28 @@ internal object ApiInBlockConverter : ApiConverter<ApiBlock, Block>() {
         return results
     }
 
-    private fun ApiBlockText?.toRichTextList() = RichTextList(this!!.rich_text.apiToModel(ApiRichTextConverter))
-    private fun ApiBlockTodo?.toRichTextList() = RichTextList(this!!.rich_text.apiToModel(ApiRichTextConverter))
-    private fun ApiBlockCode.toRichTextList() = RichTextList(this.rich_text.apiToModel(ApiRichTextConverter))
-    private fun ApiBlockCallout.toRichTextList() = RichTextList(this.rich_text.apiToModel(ApiRichTextConverter))
-    private fun ApiBlockBookmark.toRichTextList() = RichTextList(this.caption.apiToModel(ApiRichTextConverter))
+    private fun ApiBlockText?.toRichTextList() =
+        RichTextList(this!!.rich_text.apiToModel(ApiRichTextConverter))
+
+    private fun ApiBlockTodo?.toRichTextList() =
+        RichTextList(this!!.rich_text.apiToModel(ApiRichTextConverter))
+
+    private fun ApiBlockCode.toRichTextList() =
+        RichTextList(this.rich_text.apiToModel(ApiRichTextConverter))
+
+    private fun ApiBlockCallout.toRichTextList() =
+        RichTextList(this.rich_text.apiToModel(ApiRichTextConverter))
+
+    private fun ApiBlockBookmark.toRichTextList() =
+        RichTextList(this.caption.apiToModel(ApiRichTextConverter))
+
     private fun ApiBlockImage.toRichTextList() =
         this.caption?.let { RichTextList(it.apiToModel(ApiRichTextConverter)) }
 
     private fun ApiBlockVideo.toRichTextList() =
+        this.caption?.let { RichTextList(it.apiToModel(ApiRichTextConverter)) }
+
+    private fun ApiBlockPdf.toRichTextList() =
         this.caption?.let { RichTextList(it.apiToModel(ApiRichTextConverter)) }
 
     private fun ApiBlockFile.toRichTextList() =

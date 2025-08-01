@@ -26,8 +26,9 @@
 package org.jraf.klibnotion.internal.api.model.database
 
 import kotlinx.serialization.Serializable
-import org.jraf.klibnotion.internal.api.model.base.ApiEmojiOrFile
+import org.jraf.klibnotion.internal.api.model.base.ApiEmojiOrApiFile
 import org.jraf.klibnotion.internal.api.model.base.ApiReference
+import org.jraf.klibnotion.internal.api.model.file.ApiFile
 import org.jraf.klibnotion.internal.api.model.property.spec.ApiPropertySpec
 import org.jraf.klibnotion.internal.api.model.richtext.ApiRichText
 
@@ -42,7 +43,7 @@ internal data class ApiDatabase(
     val properties: Map<String, ApiPropertySpec>,
     val created_time: String,
     val last_edited_time: String,
-    val icon: ApiEmojiOrFile?,
+    val icon: ApiEmojiOrApiFile?,
     // Technically this can only be "file" or "external", never "emoji"
-    val cover: ApiEmojiOrFile?,
+    val cover: ApiFile?,
 )

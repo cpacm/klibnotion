@@ -23,10 +23,22 @@
  * limitations under the License.
  */
 
-package org.jraf.klibnotion.model.base
+package org.jraf.klibnotion.internal.model.block
 
+import org.jraf.klibnotion.model.base.UuidString
+import org.jraf.klibnotion.model.block.AudioBlock
+import org.jraf.klibnotion.model.block.Block
+import org.jraf.klibnotion.model.block.VideoBlock
+import org.jraf.klibnotion.model.date.Timestamp
 import org.jraf.klibnotion.model.file.File
+import org.jraf.klibnotion.model.richtext.RichTextList
 
-interface EmojiOrFile : File {
-    val emoji: String? // Only for type "emoji"
+internal data class AudioBlockImpl(
+    override val id: UuidString,
+    override val created: Timestamp,
+    override val lastEdited: Timestamp,
+    override val audio: File,
+    override val caption: RichTextList? = null,
+) : AudioBlock {
+    override val children: List<Block>? = null
 }

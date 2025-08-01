@@ -23,16 +23,19 @@
  * limitations under the License.
  */
 
-package org.jraf.klibnotion.model.emoji
+package org.jraf.klibnotion.internal.api.model.block
 
-import org.jraf.klibnotion.internal.model.emoji.EmojiImpl
-import org.jraf.klibnotion.model.base.EmojiOrFile
+import kotlinx.serialization.Serializable
+import org.jraf.klibnotion.internal.api.model.file.ApiId
+import org.jraf.klibnotion.internal.api.model.file.ApiUrl
+import org.jraf.klibnotion.internal.api.model.richtext.ApiRichText
+import org.jraf.klibnotion.model.file.File
 
-/**
- * See [Reference](https://developers.notion.com/reference/emoji-object).
- */
-interface Emoji : EmojiOrFile {
-    val value: String
-}
-
-fun Emoji(value: String): Emoji = EmojiImpl(value)
+@Serializable
+internal data class ApiBlockPdf(
+    override val type: String = "external",
+    override val external: ApiUrl? = null,
+    override val file_upload: ApiId? = null,
+    override val file: ApiUrl? = null,
+    val caption: List<ApiRichText>? = null,
+) : File

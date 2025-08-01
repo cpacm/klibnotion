@@ -39,6 +39,7 @@ import org.jraf.klibnotion.model.block.MutableBlockList
 import org.jraf.klibnotion.model.database.Database
 import org.jraf.klibnotion.model.database.query.DatabaseQuery
 import org.jraf.klibnotion.model.file.File
+import org.jraf.klibnotion.model.file.FileUpload
 import org.jraf.klibnotion.model.oauth.OAuthCodeAndState
 import org.jraf.klibnotion.model.oauth.OAuthCredentials
 import org.jraf.klibnotion.model.oauth.OAuthGetAccessTokenResult
@@ -81,7 +82,10 @@ interface BlockingNotionClient {
         /**
          * See [NotionClient.OAuth.getAccessToken].
          */
-        fun getAccessToken(oAuthCredentials: OAuthCredentials, code: String): OAuthGetAccessTokenResult
+        fun getAccessToken(
+            oAuthCredentials: OAuthCredentials,
+            code: String,
+        ): OAuthGetAccessTokenResult
     }
 
     /**
@@ -222,7 +226,10 @@ interface BlockingNotionClient {
         /**
          * See [NotionClient.Blocks.getBlockList].
          */
-        fun getBlockList(parentId: UuidString, pagination: Pagination = Pagination()): ResultPage<Block>
+        fun getBlockList(
+            parentId: UuidString,
+            pagination: Pagination = Pagination(),
+        ): ResultPage<Block>
 
         /**
          * See [NotionClient.Blocks.getAllBlockListRecursively].
@@ -273,6 +280,23 @@ interface BlockingNotionClient {
         ): ResultPage<Database>
     }
 
+    interface FileUploads {
+        /**
+         * Upload a file to Notion.
+         * @see <a href="https://developers.notion.com/reference/post-upload">Upload a file</a>
+         */
+        suspend fun createFileUpload(
+            mode: String,
+            filename: String? = null,
+            content_type: String? = null,
+            external_url: String? = null,
+        ): FileUpload
+
+        suspend fun uploadFile(id: UuidString, filePath: String, contentType: String): FileUpload
+
+        suspend fun checkFileUpload(id: UuidString): FileUpload
+
+    }
 
     /**
      * See [NotionClient.oAuth].
@@ -304,6 +328,10 @@ interface BlockingNotionClient {
      */
     val search: Search
 
+    /**
+     * See [NotionClient.fileUploads].
+     */
+    val fileUploads: FileUploads
 
     /**
      * See [NotionClient.close].

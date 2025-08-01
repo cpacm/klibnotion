@@ -26,11 +26,13 @@
 package org.jraf.klibnotion.internal.api.model.block
 
 import kotlinx.serialization.Serializable
-import org.jraf.klibnotion.internal.api.model.base.ApiEmojiOrFile
+import org.jraf.klibnotion.internal.api.model.base.ApiEmojiOrApiFile
 import org.jraf.klibnotion.internal.api.model.richtext.ApiRichText
+import org.jraf.klibnotion.model.color.Color
 
 @Serializable
 internal data class ApiBlockCallout(
     val rich_text: List<ApiRichText>,
-    val icon: ApiEmojiOrFile
+    val icon: ApiEmojiOrApiFile,
+    val color: Color = Color.DEFAULT,
 )

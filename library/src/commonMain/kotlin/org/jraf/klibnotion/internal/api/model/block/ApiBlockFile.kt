@@ -26,13 +26,17 @@
 package org.jraf.klibnotion.internal.api.model.block
 
 import kotlinx.serialization.Serializable
-import org.jraf.klibnotion.internal.api.model.file.ApiFile
+import org.jraf.klibnotion.internal.api.model.file.ApiId
+import org.jraf.klibnotion.internal.api.model.file.ApiUrl
 import org.jraf.klibnotion.internal.api.model.richtext.ApiRichText
+import org.jraf.klibnotion.model.file.File
 
 @Serializable
 internal data class ApiBlockFile(
-    val type: String,
-    val file: ApiFile? = null,
-    val external: ApiFile? = null,
+    override val type: String = "external",
+    override val external: ApiUrl? = null,
+    override val file_upload: ApiId? = null,
+    override val file: ApiUrl? = null,
     val caption: List<ApiRichText>? = null,
-)
+    val name: String? = null,
+) : File

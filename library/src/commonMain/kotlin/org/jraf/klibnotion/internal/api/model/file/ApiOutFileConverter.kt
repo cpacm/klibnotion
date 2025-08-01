@@ -35,10 +35,23 @@ import org.jraf.klibnotion.model.file.File
 internal object ApiOutFileConverter : ApiConverter<JsonElement, File>() {
     override fun modelToApi(model: File): JsonElement {
         return buildJsonObject {
-            put("type", "external")
-            putJsonObject("external") {
-                put("url", model.url)
+            put("type", model.type)
+            when (model.type) {
+                "external" -> putJsonObject("external") {
+                    put("url", model.external?.url)
+                }
+
+                "file_upload" -> putJsonObject("file_upload") {
+                    put("id", model.file_upload?.id)
+                }
+
+                "file" -> putJsonObject("file") {
+                    put("url", model.file?.url)
+                }
+
+                else -> throw IllegalArgumentException("Unknown file type: ${model.type}")
             }
+
         }
     }
 }

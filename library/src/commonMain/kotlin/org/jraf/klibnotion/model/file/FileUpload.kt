@@ -7,7 +7,7 @@
  *                              /___/
  * repository.
  *
- * Copyright (C) 2021-present Benoit 'BoD' Lubek (BoD@JRAF.org)
+ * Copyright (C) 2025-present Benoit 'BoD' Lubek (BoD@JRAF.org)
  * and contributors (https://github.com/BoD/klibnotion/graphs/contributors)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,10 +23,18 @@
  * limitations under the License.
  */
 
-package org.jraf.klibnotion.model.base
+package org.jraf.klibnotion.model.file
 
-import org.jraf.klibnotion.model.file.File
-
-interface EmojiOrFile : File {
-    val emoji: String? // Only for type "emoji"
+interface FileUpload {
+    val id: String
+    val `object`: String // file_upload
+    val created_time: String
+    val last_edited_time: String
+    val file_upload: String?
+    val upload_url: String
+    val archived: Boolean
+    val status: String // "pending" or "uploaded" or "failed" or "expired"
+    val fileName: String?
+    val contentType: String
+    val content_length: Long
 }

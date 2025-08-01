@@ -36,6 +36,7 @@ import org.jraf.klibnotion.internal.api.model.ApiConverter
 import org.jraf.klibnotion.internal.api.model.base.ApiOutEmojiOrFileConverter
 import org.jraf.klibnotion.internal.api.model.modelToApi
 import org.jraf.klibnotion.internal.api.model.richtext.ApiOutRichTextListConverter
+import org.jraf.klibnotion.model.block.AudioBlock
 import org.jraf.klibnotion.model.block.Block
 import org.jraf.klibnotion.model.block.BookmarkBlock
 import org.jraf.klibnotion.model.block.BulletedListItemBlock
@@ -53,6 +54,7 @@ import org.jraf.klibnotion.model.block.Heading3Block
 import org.jraf.klibnotion.model.block.ImageBlock
 import org.jraf.klibnotion.model.block.NumberedListItemBlock
 import org.jraf.klibnotion.model.block.ParagraphBlock
+import org.jraf.klibnotion.model.block.PdfBlock
 import org.jraf.klibnotion.model.block.QuoteBlock
 import org.jraf.klibnotion.model.block.SyncedBlock
 import org.jraf.klibnotion.model.block.TableBlock
@@ -62,6 +64,7 @@ import org.jraf.klibnotion.model.block.ToDoBlock
 import org.jraf.klibnotion.model.block.ToggleBlock
 import org.jraf.klibnotion.model.block.UnknownTypeBlock
 import org.jraf.klibnotion.model.block.VideoBlock
+import org.jraf.klibnotion.model.file.File
 import org.jraf.klibnotion.model.richtext.RichTextList
 
 internal object ApiOutBlockConverter : ApiConverter<JsonElement, Block>() {
@@ -93,6 +96,8 @@ internal object ApiOutBlockConverter : ApiConverter<JsonElement, Block>() {
                 is SyncedBlock -> "synced_block"
                 is TableBlock -> "table"
                 is TableRowBlock -> "table_row"
+                is PdfBlock -> "pdf"
+                is AudioBlock -> "audio"
 
                 is UnknownTypeBlock -> throw IllegalStateException("Unknown type: ${model.type}")
                 else -> throw IllegalStateException("Converter not implemented for ${model::class.simpleName}")
@@ -135,29 +140,45 @@ internal object ApiOutBlockConverter : ApiConverter<JsonElement, Block>() {
                     }
 
                     is ImageBlock -> {
-                        model.caption?.let {
-                            put("caption", it.modelToApi(ApiOutRichTextListConverter))
-                        }
-                        putJsonObject("external") {
-                            put("url", model.image.url)
+                        putFileBlock(model.image){
+                            model.caption?.let {
+                                put("caption", it.modelToApi(ApiOutRichTextListConverter))
+                            }
                         }
                     }
 
                     is FileBlock -> {
-                        model.caption?.let {
-                            put("caption", it.modelToApi(ApiOutRichTextListConverter))
-                        }
-                        putJsonObject("external") {
-                            put("url", model.file.url)
+                        putFileBlock(model.file){
+                            model.caption?.let {
+                                put("caption", it.modelToApi(ApiOutRichTextListConverter))
+                            }
                         }
                     }
 
                     is VideoBlock -> {
+                        putFileBlock(model.video){
+                            model.caption?.let {
+                                put("caption", it.modelToApi(ApiOutRichTextListConverter))
+                            }
+                        }
+                    }
+
+                    is PdfBlock -> {
                         model.caption?.let {
                             put("caption", it.modelToApi(ApiOutRichTextListConverter))
                         }
-                        putJsonObject("external") {
-                            put("url", model.video.url)
+                        putFileBlock(model.pdf){
+                            model.caption?.let {
+                                put("caption", it.modelToApi(ApiOutRichTextListConverter))
+                            }
+                        }
+                    }
+
+                    is AudioBlock -> {
+                        putFileBlock(model.audio){
+                            model.caption?.let {
+                                put("caption", it.modelToApi(ApiOutRichTextListConverter))
+                            }
                         }
                     }
 
@@ -185,7 +206,7 @@ internal object ApiOutBlockConverter : ApiConverter<JsonElement, Block>() {
                     is UnknownTypeBlock,
                     is DividerBlock,
                     is TableOfContentsBlock,
-                    -> {
+                        -> {
                     }
                 }
                 model.children?.let {
@@ -194,6 +215,34 @@ internal object ApiOutBlockConverter : ApiConverter<JsonElement, Block>() {
                         JsonArray(it.modelToApi(ApiOutBlockConverter))
                     )
                 }
+            }
+        }
+    }
+
+    private fun JsonObjectBuilder.putFileBlock(file: File,builderAction: JsonObjectBuilder.() -> Unit) {
+        when (file.type) {
+            "file" -> {
+                put("type", "file")
+                putJsonObject("file") {
+                    put("url", file.file?.url)
+                }
+                builderAction()
+            }
+
+            "external" -> {
+                put("type", "external")
+                putJsonObject("external") {
+                    put("url", file.external?.url)
+                }
+                builderAction()
+            }
+
+            "file_upload" -> {
+                put("type", "file_upload")
+                putJsonObject("file_upload") {
+                    put("id", file.file_upload?.id)
+                }
+                builderAction()
             }
         }
     }

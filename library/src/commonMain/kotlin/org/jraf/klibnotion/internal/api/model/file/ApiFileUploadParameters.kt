@@ -7,7 +7,7 @@
  *                              /___/
  * repository.
  *
- * Copyright (C) 2021-present Benoit 'BoD' Lubek (BoD@JRAF.org)
+ * Copyright (C) 2025-present Benoit 'BoD' Lubek (BoD@JRAF.org)
  * and contributors (https://github.com/BoD/klibnotion/graphs/contributors)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,15 +23,19 @@
  * limitations under the License.
  */
 
-package org.jraf.klibnotion.internal.api.model.base
+package org.jraf.klibnotion.internal.api.model.file
 
 import kotlinx.serialization.Serializable
-import org.jraf.klibnotion.internal.api.model.file.ApiFile
 
+/**
+ * See [Reference](https://developers.notion.com/reference/create-a-file-upload).
+ */
 @Serializable
-internal data class ApiEmojiOrFile(
-    val type: String,
-    val emoji: String? = null,
-    val file: ApiFile? = null,
-    val external: ApiFile? = null,
+internal data class ApiFileUploadParameters(
+    val mode: String = "single_part", // "single_part" , "multi_part" or "external_url"
+    val filename: String? = null, // Required when mode is multi_part or external_url
+    val content_type: String? = null, // Recommended when sending the file in multiple parts. Must match the content type of the file that's sent
+    val number_of_parts: Int = 1, // 1-1000, Required when mode is multi_part. The number of parts that will be sent in the request
+    val external_url: String? = null, // Required when mode is external_url. The URL of the file to upload
+
 )

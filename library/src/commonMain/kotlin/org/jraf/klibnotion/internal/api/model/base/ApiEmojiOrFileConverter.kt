@@ -27,17 +27,17 @@ package org.jraf.klibnotion.internal.api.model.base
 
 import org.jraf.klibnotion.internal.api.model.ApiConverter
 import org.jraf.klibnotion.internal.model.emoji.EmojiImpl
-import org.jraf.klibnotion.internal.model.file.FileImpl
 import org.jraf.klibnotion.model.base.EmojiOrFile
 
-internal object ApiEmojiOrFileConverter : ApiConverter<ApiEmojiOrFile?, EmojiOrFile?>() {
-    override fun apiToModel(apiModel: ApiEmojiOrFile?): EmojiOrFile? {
+internal object ApiEmojiOrFileConverter : ApiConverter<ApiEmojiOrApiFile?, EmojiOrFile?>() {
+    override fun apiToModel(apiModel: ApiEmojiOrApiFile?): EmojiOrFile? {
         if (apiModel == null) return null
-        return when (apiModel.type) {
-            "emoji" -> EmojiImpl(value = apiModel.emoji!!)
-            "file" -> FileImpl(name = null, url = apiModel.file!!.url)
-            "external" -> FileImpl(name = null, url = apiModel.external!!.url)
-            else -> null
-        }
+        return EmojiImpl(
+            type = apiModel.type,
+            emoji = apiModel.emoji,
+            file = apiModel.file,
+            file_upload = apiModel.file_upload,
+            external = apiModel.external
+        )
     }
 }

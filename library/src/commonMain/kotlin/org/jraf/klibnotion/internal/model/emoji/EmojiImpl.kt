@@ -25,8 +25,14 @@
 
 package org.jraf.klibnotion.internal.model.emoji
 
-import org.jraf.klibnotion.model.emoji.Emoji
+import org.jraf.klibnotion.internal.api.model.file.ApiId
+import org.jraf.klibnotion.internal.api.model.file.ApiUrl
+import org.jraf.klibnotion.model.base.EmojiOrFile
 
 internal data class EmojiImpl(
-    override val value: String,
-) : Emoji
+    override val type: String,
+    override val external: ApiUrl? = null,
+    override val file_upload: ApiId? = null,
+    override val file: ApiUrl? = null,
+    override val emoji: String? = null,
+) : EmojiOrFile

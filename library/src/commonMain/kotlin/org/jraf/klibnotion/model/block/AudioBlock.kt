@@ -23,10 +23,15 @@
  * limitations under the License.
  */
 
-package org.jraf.klibnotion.model.base
+package org.jraf.klibnotion.model.block
 
 import org.jraf.klibnotion.model.file.File
+import org.jraf.klibnotion.model.richtext.RichTextList
 
-interface EmojiOrFile : File {
-    val emoji: String? // Only for type "emoji"
+/**
+ * See [reference](https://developers.notion.com/reference/block#video-blocks)
+ */
+interface AudioBlock : Block {
+    val audio: File
+    val caption: RichTextList?
 }

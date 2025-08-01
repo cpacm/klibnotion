@@ -31,23 +31,37 @@ import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonObject
 import org.jraf.klibnotion.internal.api.model.ApiConverter
 import org.jraf.klibnotion.model.base.EmojiOrFile
-import org.jraf.klibnotion.model.emoji.Emoji
-import org.jraf.klibnotion.model.file.File
 
 internal object ApiOutEmojiOrFileConverter : ApiConverter<JsonElement, EmojiOrFile>() {
     override fun modelToApi(model: EmojiOrFile): JsonElement {
         return buildJsonObject {
-            when (model) {
-                is Emoji -> {
+            when (model.type) {
+                "emoji" -> {
                     put("type", "emoji")
-                    put("emoji", model.value)
+                    put("emoji", model.emoji)
                 }
-                is File -> {
+
+                "external" -> {
                     put("type", "external")
                     putJsonObject("external") {
-                        put("url", model.url)
+                        put("url", model.external!!.url)
                     }
                 }
+
+                "file_upload" -> {
+                    put("type", "file_upload")
+                    putJsonObject("file_upload") {
+                        put("id", model.file_upload!!.id)
+                    }
+                }
+
+                "file" -> {
+                    put("type", "file")
+                    putJsonObject("file") {
+                        put("url", model.file!!.url)
+                    }
+                }
+
                 else -> throw AssertionError("Should never happen")
             }
         }

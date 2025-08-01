@@ -23,18 +23,20 @@
  * limitations under the License.
  */
 
-package org.jraf.klibnotion.internal.api.model.emoji
+package org.jraf.klibnotion.internal.api.model.base
 
-import org.jraf.klibnotion.internal.api.model.ApiConverter
-import org.jraf.klibnotion.internal.model.emoji.EmojiImpl
-import org.jraf.klibnotion.model.emoji.Emoji
+import kotlinx.serialization.Serializable
+import org.jraf.klibnotion.internal.api.model.file.ApiId
+import org.jraf.klibnotion.internal.api.model.file.ApiUrl
+import org.jraf.klibnotion.model.base.EmojiOrFile
 
-internal object ApiEmojiConverter : ApiConverter<ApiEmoji, Emoji>() {
-    override fun apiToModel(apiModel: ApiEmoji): Emoji {
-        return EmojiImpl(value = apiModel.emoji)
-    }
 
-    override fun modelToApi(model: Emoji): ApiEmoji {
-        return ApiEmoji(emoji = model.value)
-    }
-}
+//internal typealias ApiEmojiOrFile = ApiFile
+@Serializable
+internal data class ApiEmojiOrApiFile(
+    override val type: String,
+    override val external: ApiUrl? = null,
+    override val file_upload: ApiId? = null,
+    override val file: ApiUrl? = null,
+    override val emoji: String? = null,
+) : EmojiOrFile

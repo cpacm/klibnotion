@@ -7,7 +7,7 @@
  *                              /___/
  * repository.
  *
- * Copyright (C) 2021-present Benoit 'BoD' Lubek (BoD@JRAF.org)
+ * Copyright (C) 2025-present Benoit 'BoD' Lubek (BoD@JRAF.org)
  * and contributors (https://github.com/BoD/klibnotion/graphs/contributors)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,10 +23,25 @@
  * limitations under the License.
  */
 
-package org.jraf.klibnotion.model.base
+package org.jraf.klibnotion.internal.api.model.file
 
-import org.jraf.klibnotion.model.file.File
+import kotlinx.serialization.Serializable
 
-interface EmojiOrFile : File {
-    val emoji: String? // Only for type "emoji"
-}
+/**
+ * See
+ * - [Reference](https://developers.notion.com/reference/file-upload)
+ */
+@Serializable
+internal data class ApiFileUpload(
+    val id: String,
+    val `object`: String, // file_upload
+    val created_time: String,
+    val last_edited_time: String,
+    val file_upload: String? = null,
+    val upload_url: String,
+    val archived: Boolean = false,
+    val status: String, // "pending" or "uploaded" or "failed" or "expired"
+    val fileName: String? = null,
+    val contentType: String,
+    val content_length: Long,
+)

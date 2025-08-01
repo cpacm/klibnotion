@@ -50,6 +50,8 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
+import kotlinx.io.files.Path
+import kotlinx.io.files.SystemFileSystem
 import kotlinx.serialization.json.Json
 import org.jraf.klibnotion.client.ClientConfiguration
 import org.jraf.klibnotion.client.HttpLoggingLevel
@@ -65,6 +67,8 @@ import org.jraf.klibnotion.internal.api.model.database.create.DatabaseCreatePara
 import org.jraf.klibnotion.internal.api.model.database.query.ApiDatabaseQueryConverter
 import org.jraf.klibnotion.internal.api.model.database.update.ApiDatabaseUpdateParametersConverter
 import org.jraf.klibnotion.internal.api.model.database.update.DatabaseUpdateParameters
+import org.jraf.klibnotion.internal.api.model.file.ApiFileUploadConverter
+import org.jraf.klibnotion.internal.api.model.file.ApiFileUploadParameters
 import org.jraf.klibnotion.internal.api.model.modelToApi
 import org.jraf.klibnotion.internal.api.model.oauth.ApiOAuthGetAccessTokenParameters
 import org.jraf.klibnotion.internal.api.model.oauth.ApiOAuthGetAccessTokenResultConverter
@@ -95,6 +99,7 @@ import org.jraf.klibnotion.model.database.query.DatabaseQuery
 import org.jraf.klibnotion.model.exceptions.NotionClientException
 import org.jraf.klibnotion.model.exceptions.NotionClientRequestException
 import org.jraf.klibnotion.model.file.File
+import org.jraf.klibnotion.model.file.FileUpload
 import org.jraf.klibnotion.model.oauth.OAuthCodeAndState
 import org.jraf.klibnotion.model.oauth.OAuthCredentials
 import org.jraf.klibnotion.model.oauth.OAuthGetAccessTokenResult
@@ -116,7 +121,8 @@ internal class NotionClientImpl(
     NotionClient.Databases,
     NotionClient.Pages,
     NotionClient.Blocks,
-    NotionClient.Search {
+    NotionClient.Search,
+    NotionClient.FileUploads {
 
     override val oAuth = this
     override val users = this
@@ -124,6 +130,7 @@ internal class NotionClientImpl(
     override val pages = this
     override val blocks = this
     override val search = this
+    override val fileUploads = this
 
     private val httpClient by lazy {
         createHttpClient(clientConfiguration.httpConfiguration.bypassSslChecks) {
@@ -206,7 +213,8 @@ internal class NotionClientImpl(
     // region OAuth
 
     override fun getUserPromptUri(oAuthCredentials: OAuthCredentials, uniqueState: String): String {
-        return URLBuilder(protocol = URLProtocol.createOrDefault(NotionService.OAUTH_URL_SCHEME),
+        return URLBuilder(
+            protocol = URLProtocol.createOrDefault(NotionService.OAUTH_URL_SCHEME),
             host = NotionService.OAUTH_URL_HOST,
             pathSegments = NotionService.OAUTH_URL_PATH_SEGMENTS,
             parameters = ParametersBuilder().apply {
@@ -230,7 +238,10 @@ internal class NotionClientImpl(
         }
     }
 
-    override suspend fun getAccessToken(oAuthCredentials: OAuthCredentials, code: String): OAuthGetAccessTokenResult {
+    override suspend fun getAccessToken(
+        oAuthCredentials: OAuthCredentials,
+        code: String,
+    ): OAuthGetAccessTokenResult {
         return service.getOAuthAccessToken(
             clientId = oAuthCredentials.clientId,
             clientSecret = oAuthCredentials.clientSecret,
@@ -427,7 +438,10 @@ internal class NotionClientImpl(
 
     // region Blocks
 
-    override suspend fun getBlockList(parentId: UuidString, pagination: Pagination): ResultPage<Block> {
+    override suspend fun getBlockList(
+        parentId: UuidString,
+        pagination: Pagination,
+    ): ResultPage<Block> {
         return service.getBlockList(parentId, pagination.startCursor)
             .apiToModel(ApiPageResultBlockConverter)
     }
@@ -516,6 +530,36 @@ internal class NotionClientImpl(
             ).modelToApi(ApiSearchParametersConverter),
         )
             .apiToModel(ApiPageResultDatabaseConverter)
+    }
+
+    // endregion
+
+    // region File Uploads
+
+    override suspend fun createFileUpload(
+        mode: String, filename: String?, content_type: String?, external_url: String?,
+    ): FileUpload {
+        val fileUploadParameters = ApiFileUploadParameters(
+            mode = mode,
+            filename = filename,
+            content_type = content_type,
+            external_url = external_url
+        )
+        return service.createFileUpload(fileUploadParameters)
+            .apiToModel(ApiFileUploadConverter)
+    }
+
+    override suspend fun uploadFile(id: UuidString,filePath: String,contentType:String): FileUpload {
+        val path = Path(filePath)
+        val fileName = path.name
+
+        return service.uploadFile(id,fileName, path, contentType)
+            .apiToModel(ApiFileUploadConverter)
+    }
+
+    override suspend fun checkFileUpload(id: UuidString): FileUpload {
+        return service.checkFileUpload(id)
+            .apiToModel(ApiFileUploadConverter)
     }
 
     // endregion

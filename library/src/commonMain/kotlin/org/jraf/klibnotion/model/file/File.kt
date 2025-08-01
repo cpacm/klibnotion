@@ -25,12 +25,33 @@
 
 package org.jraf.klibnotion.model.file
 
-import org.jraf.klibnotion.internal.model.file.FileImpl
 import org.jraf.klibnotion.model.base.EmojiOrFile
+import org.jraf.klibnotion.model.base.UuidString
 
-interface File : EmojiOrFile {
-    val name: String?
-    val url: String
+//interface File : EmojiOrFile {
+//    val url: String
+//}
+
+interface File {
+    val type: String // "external", "file_upload", "file", "emoji"
+    val external: FileUrl? // Only for type "external"
+    val file_upload: FileId? // Only for type "file_upload"
+    val file: FileUrl? // Only for type "file"
 }
 
-fun File(url: String): File = FileImpl(name = null, url = url)
+interface FileId {
+    val id: UuidString // Only for type "file_upload"
+}
+
+interface FileUrl {
+    val url: String // Only for type "external" or "file"
+}
+
+data class Emoji(
+    override val type: String = "emoji",
+    override val emoji: String,
+    override val external: FileUrl? =null,
+    override val file_upload: FileId? =null,
+    override val file: FileUrl? = null,
+) : EmojiOrFile
+

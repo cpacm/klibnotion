@@ -25,9 +25,27 @@
 
 package org.jraf.klibnotion.internal.model.file
 
+import org.jraf.klibnotion.internal.api.model.file.ApiId
+import org.jraf.klibnotion.internal.api.model.file.ApiUrl
 import org.jraf.klibnotion.model.file.File
 
 internal data class FileImpl(
-    override val name: String?,
-    override val url: String,
+    override val type: String = "file", //"file", "file_upload", "external"
+    override val external: ApiUrl? = null,
+    override val file_upload: ApiId? = null,
+    override val file: ApiUrl? = null,
+) : File
+
+internal data class UploadFileImpl(
+    override val type: String = "file_upload", //"file", "file_upload", "external"
+    override val external: ApiUrl? = null,
+    override val file_upload: ApiId? = null,
+    override val file: ApiUrl? = null,
+) : File
+
+internal data class ExternalFileImpl(
+    override val type: String = "external", //"file", "file_upload", "external"
+    override val external: ApiUrl? = null,
+    override val file_upload: ApiId? = null,
+    override val file: ApiUrl? = null,
 ) : File

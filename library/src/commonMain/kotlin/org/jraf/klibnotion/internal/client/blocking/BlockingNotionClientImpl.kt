@@ -25,8 +25,12 @@
 
 package org.jraf.klibnotion.internal.client.blocking
 
+import kotlinx.io.files.Path
 import org.jraf.klibnotion.client.NotionClient
 import org.jraf.klibnotion.client.blocking.BlockingNotionClient
+import org.jraf.klibnotion.internal.api.model.apiToModel
+import org.jraf.klibnotion.internal.api.model.file.ApiFileUploadConverter
+import org.jraf.klibnotion.internal.api.model.file.ApiFileUploadParameters
 import org.jraf.klibnotion.internal.runBlocking
 import org.jraf.klibnotion.model.base.EmojiOrFile
 import org.jraf.klibnotion.model.base.UuidString
@@ -37,6 +41,7 @@ import org.jraf.klibnotion.model.block.BlockListProducer
 import org.jraf.klibnotion.model.block.MutableBlockList
 import org.jraf.klibnotion.model.database.query.DatabaseQuery
 import org.jraf.klibnotion.model.file.File
+import org.jraf.klibnotion.model.file.FileUpload
 import org.jraf.klibnotion.model.oauth.OAuthCredentials
 import org.jraf.klibnotion.model.pagination.Pagination
 import org.jraf.klibnotion.model.property.sort.PropertySort
@@ -52,13 +57,15 @@ internal class BlockingNotionClientImpl(
     BlockingNotionClient.Databases,
     BlockingNotionClient.Pages,
     BlockingNotionClient.Blocks,
-    BlockingNotionClient.Search {
+    BlockingNotionClient.Search,
+    BlockingNotionClient.FileUploads {
     override val oAuth = this
     override val users = this
     override val databases = this
     override val pages = this
     override val blocks = this
     override val search = this
+    override val fileUploads = this
 
     override fun getUserPromptUri(oAuthCredentials: OAuthCredentials, uniqueState: String) =
         notionClient.oAuth.getUserPromptUri(oAuthCredentials, uniqueState)
@@ -237,13 +244,34 @@ internal class BlockingNotionClientImpl(
         notionClient.blocks.updateBlock(id, block)
     }
 
-    override fun searchPages(query: String?, sort: PropertySort?, pagination: Pagination) = runBlocking {
-        notionClient.search.searchPages(query, sort, pagination)
+    override fun searchPages(query: String?, sort: PropertySort?, pagination: Pagination) =
+        runBlocking {
+            notionClient.search.searchPages(query, sort, pagination)
+        }
+
+    override fun searchDatabases(query: String?, sort: PropertySort?, pagination: Pagination) =
+        runBlocking {
+            notionClient.search.searchDatabases(query, sort, pagination)
+        }
+
+    // region File Uploads
+
+    override suspend fun createFileUpload(
+        mode: String, filename: String?, content_type: String?, external_url: String?,
+    ) = runBlocking {
+        notionClient.fileUploads.createFileUpload(mode, filename, content_type, external_url)
     }
 
-    override fun searchDatabases(query: String?, sort: PropertySort?, pagination: Pagination) = runBlocking {
-        notionClient.search.searchDatabases(query, sort, pagination)
+    override suspend fun uploadFile(id: UuidString, filePath: String, contentType: String) =
+        runBlocking {
+            notionClient.fileUploads.uploadFile(id, filePath, contentType)
+        }
+
+    override suspend fun checkFileUpload(id: UuidString) = runBlocking {
+        notionClient.fileUploads.checkFileUpload(id)
     }
+
+    // endregion
 
     override fun close() = notionClient.close()
 }

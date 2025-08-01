@@ -23,10 +23,24 @@
  * limitations under the License.
  */
 
-package org.jraf.klibnotion.model.base
+package org.jraf.klibnotion.internal.api.model.block
 
+import org.jraf.klibnotion.internal.api.model.ApiConverter
+import org.jraf.klibnotion.internal.model.file.ExternalFileImpl
+import org.jraf.klibnotion.internal.model.file.FileImpl
+import org.jraf.klibnotion.internal.model.file.UploadFileImpl
 import org.jraf.klibnotion.model.file.File
 
-interface EmojiOrFile : File {
-    val emoji: String? // Only for type "emoji"
+internal object ApiInAudioFileConverter : ApiConverter<ApiBlockAudio, File>() {
+    override fun apiToModel(apiModel: ApiBlockAudio): File {
+        return when (apiModel.type) {
+            "file" -> FileImpl(type = apiModel.type, file = apiModel.file)
+            "external" -> ExternalFileImpl(type = apiModel.type, external = apiModel.external)
+            "file_upload" -> UploadFileImpl(
+                type = apiModel.type,
+                file_upload = apiModel.file_upload
+            )
+            else -> throw RuntimeException()
+        }
+    }
 }

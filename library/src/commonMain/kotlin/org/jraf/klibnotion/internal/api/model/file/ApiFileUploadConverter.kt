@@ -7,7 +7,7 @@
  *                              /___/
  * repository.
  *
- * Copyright (C) 2021-present Benoit 'BoD' Lubek (BoD@JRAF.org)
+ * Copyright (C) 2025-present Benoit 'BoD' Lubek (BoD@JRAF.org)
  * and contributors (https://github.com/BoD/klibnotion/graphs/contributors)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,33 +26,22 @@
 package org.jraf.klibnotion.internal.api.model.file
 
 import org.jraf.klibnotion.internal.api.model.ApiConverter
-import org.jraf.klibnotion.internal.model.file.ExternalFileImpl
-import org.jraf.klibnotion.internal.model.file.FileImpl
-import org.jraf.klibnotion.internal.model.file.UploadFileImpl
-import org.jraf.klibnotion.model.file.File
+import org.jraf.klibnotion.internal.model.file.FileUploadImpl
+import org.jraf.klibnotion.model.file.FileUpload
 
-internal object ApiFileConverter : ApiConverter<ApiFile?, File?>() {
+internal object ApiFileUploadConverter : ApiConverter<ApiFileUpload, FileUpload>() {
 
-    override fun apiToModel(apiModel: ApiFile?): File? {
-        if (apiModel == null) return null
-        return when (apiModel.type) {
-            "external" -> {
-                ExternalFileImpl(
-                    external = apiModel.external
-                )
-            }
-
-            "file" -> {
-                FileImpl(file = apiModel.file)
-            }
-
-            "file_upload" -> {
-                UploadFileImpl(file_upload = apiModel.file_upload)
-            }
-
-            else -> null
-        }
-
-
-    }
+    override fun apiToModel(apiModel: ApiFileUpload) = FileUploadImpl(
+        id = apiModel.id,
+        `object` = apiModel.`object`,
+        created_time = apiModel.created_time,
+        last_edited_time = apiModel.last_edited_time,
+        file_upload = apiModel.file_upload,
+        upload_url = apiModel.upload_url,
+        archived = apiModel.archived,
+        status = apiModel.status,
+        fileName = apiModel.fileName,
+        contentType = apiModel.contentType,
+        content_length = apiModel.content_length
+    )
 }

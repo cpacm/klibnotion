@@ -27,6 +27,9 @@ package org.jraf.klibnotion.internal.client
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.request.forms.MultiPartFormDataContent
+import io.ktor.client.request.forms.formData
+import io.ktor.client.request.forms.submitFormWithBinaryData
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
@@ -34,9 +37,15 @@ import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
+import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
 import io.ktor.util.encodeBase64
+import kotlinx.io.Source
+import kotlinx.io.buffered
+import kotlinx.io.files.Path
+import kotlinx.io.files.SystemFileSystem
+import kotlinx.io.files.source
 import kotlinx.serialization.json.JsonElement
 import org.jraf.klibnotion.internal.api.model.block.ApiAppendBlocksParameters
 import org.jraf.klibnotion.internal.api.model.block.ApiBlock
@@ -44,6 +53,8 @@ import org.jraf.klibnotion.internal.api.model.database.ApiDatabase
 import org.jraf.klibnotion.internal.api.model.database.create.ApiDatabaseCreateParameters
 import org.jraf.klibnotion.internal.api.model.database.query.ApiDatabaseQuery
 import org.jraf.klibnotion.internal.api.model.database.update.ApiDatabaseUpdateParameters
+import org.jraf.klibnotion.internal.api.model.file.ApiFileUpload
+import org.jraf.klibnotion.internal.api.model.file.ApiFileUploadParameters
 import org.jraf.klibnotion.internal.api.model.oauth.ApiOAuthGetAccessTokenParameters
 import org.jraf.klibnotion.internal.api.model.oauth.ApiOAuthGetAccessTokenResult
 import org.jraf.klibnotion.internal.api.model.page.ApiPage
@@ -66,6 +77,7 @@ internal class NotionService(private val httpClient: HttpClient) {
         private const val PAGES = "pages"
         private const val BLOCKS = "blocks"
         private const val SEARCH = "search"
+        private const val FILE_UPLOADS = "file_uploads"
 
         const val OAUTH_URL_SCHEME = "https"
         const val OAUTH_URL_HOST = "api.notion.com"
@@ -227,6 +239,38 @@ internal class NotionService(private val httpClient: HttpClient) {
         return httpClient.post("$BASE_URL/$SEARCH") {
             contentType(ContentType.Application.Json)
             setBody(parameters)
+        }.body()
+    }
+
+    // endregion
+
+
+    // region File Uploads
+    suspend fun createFileUpload(parameters: ApiFileUploadParameters): ApiFileUpload {
+        return httpClient.post("$BASE_URL/$FILE_UPLOADS") {
+            contentType(ContentType.Application.Json)
+            setBody(parameters)
+        }.body()
+    }
+
+    suspend fun uploadFile(
+        id: UuidString, fileName: String,
+        path: Path, contentType: String,
+    ): ApiFileUpload {
+        return httpClient.submitFormWithBinaryData(
+            url = "$BASE_URL/$FILE_UPLOADS/$id/send",
+            formData = formData {
+                append("file", SystemFileSystem.source(path).buffered(), headers = Headers.build {
+                    append("filename", fileName)
+                    append(HttpHeaders.ContentType, contentType)
+                }) // Assuming File has readBytes() and contentType properties
+            }
+        ).body()
+    }
+
+    suspend fun checkFileUpload(id: UuidString): ApiFileUpload {
+        return httpClient.get("$BASE_URL/$FILE_UPLOADS/$id") {
+            contentType(ContentType.Application.Json)
         }.body()
     }
 

@@ -27,6 +27,7 @@ package org.jraf.klibnotion.internal.api.model.block
 
 import kotlinx.serialization.Serializable
 import org.jraf.klibnotion.internal.api.model.richtext.ApiRichText
+import org.jraf.klibnotion.model.color.Color
 
 /**
  * See [Reference](https://developers.notion.com/reference/block).
@@ -35,4 +36,5 @@ import org.jraf.klibnotion.internal.api.model.richtext.ApiRichText
 internal data class ApiBlockTodo(
     val checked: Boolean,
     val rich_text: List<ApiRichText>,
+    val color: Color = Color.DEFAULT,
 )

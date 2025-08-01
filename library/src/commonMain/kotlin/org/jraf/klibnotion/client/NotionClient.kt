@@ -36,6 +36,7 @@ import org.jraf.klibnotion.model.block.MutableBlockList
 import org.jraf.klibnotion.model.database.Database
 import org.jraf.klibnotion.model.database.query.DatabaseQuery
 import org.jraf.klibnotion.model.file.File
+import org.jraf.klibnotion.model.file.FileUpload
 import org.jraf.klibnotion.model.oauth.OAuthCodeAndState
 import org.jraf.klibnotion.model.oauth.OAuthCredentials
 import org.jraf.klibnotion.model.oauth.OAuthGetAccessTokenResult
@@ -81,7 +82,10 @@ interface NotionClient {
          * Retrieve the OAuth access token from a code obtained via [getUserPromptUri] and [extractCodeAndStateFromRedirectUri].
          * @see <a href="https://developers.notion.com/docs/authorization#exchanging-the-grant-for-an-access-token">Exchanging the grant for an access token</a>
          */
-        suspend fun getAccessToken(oAuthCredentials: OAuthCredentials, code: String): OAuthGetAccessTokenResult
+        suspend fun getAccessToken(
+            oAuthCredentials: OAuthCredentials,
+            code: String,
+        ): OAuthGetAccessTokenResult
     }
 
 
@@ -251,7 +255,10 @@ interface NotionClient {
          *
          * @see <a href="https://developers.notion.com/reference/get-block-children">Retrieve block children</a>
          */
-        suspend fun getBlockList(parentId: UuidString, pagination: Pagination = Pagination()): ResultPage<Block>
+        suspend fun getBlockList(
+            parentId: UuidString,
+            pagination: Pagination = Pagination(),
+        ): ResultPage<Block>
 
         /**
          * Retrieve all children blocks (including all the pages) of the specified object, and including all their children,
@@ -334,6 +341,24 @@ interface NotionClient {
         ): ResultPage<Database>
     }
 
+    interface FileUploads {
+        /**
+         * Upload a file to Notion.
+         * @see <a href="https://developers.notion.com/reference/post-upload">Upload a file</a>
+         */
+        suspend fun createFileUpload(
+            mode: String,
+            filename: String? = null,
+            content_type: String? = null,
+            external_url: String? = null,
+        ): FileUpload
+
+        suspend fun uploadFile(id: UuidString, filePath: String, contentType: String): FileUpload
+
+        suspend fun checkFileUpload(id: UuidString): FileUpload
+
+    }
+
     /**
      * OAuth related APIs.
      */
@@ -363,6 +388,11 @@ interface NotionClient {
      * Search related APIs.
      */
     val search: Search
+
+    /**
+     * File upload related APIs.
+     */
+    val fileUploads: FileUploads
 
     /**
      * Dispose of this client instance.
