@@ -29,19 +29,14 @@ import kotlinx.serialization.Serializable
 import org.jraf.klibnotion.internal.api.model.file.ApiId
 import org.jraf.klibnotion.internal.api.model.file.ApiUrl
 import org.jraf.klibnotion.internal.api.model.richtext.ApiRichText
+import org.jraf.klibnotion.model.file.FILE_TYPE_EXTERNAL
 import org.jraf.klibnotion.model.file.File
 
 @Serializable
 internal data class ApiBlockVideo(
-    override val type: String = "external",
+    override val type: String = FILE_TYPE_EXTERNAL,
     override val external: ApiUrl? = null,
     override val file_upload: ApiId? = null,
     override val file: ApiUrl? = null,
     val caption: List<ApiRichText>? = null,
 ) : File
-
-//  https://www.youtube.com/watch?v=[id], https://www.youtube.com/embed/[id]
-val VIDEO_TYPE_ARRAY = arrayOf(
-    "amv", "asf", "avi", "f4v", "flv", "gifv", "mkv", "mov",
-    "mpg", "mpeg", "mpv", "mp4", "m4v", "qt", "wmv"
-)

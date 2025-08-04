@@ -27,6 +27,7 @@ package org.jraf.klibnotion.internal.api.model.file
 
 import kotlinx.serialization.Serializable
 import org.jraf.klibnotion.model.base.UuidString
+import org.jraf.klibnotion.model.file.FILE_TYPE_EXTERNAL
 import org.jraf.klibnotion.model.file.File
 import org.jraf.klibnotion.model.file.FileId
 import org.jraf.klibnotion.model.file.FileUrl
@@ -37,20 +38,20 @@ import org.jraf.klibnotion.model.file.FileUrl
  */
 @Serializable
 internal data class ApiFile(
-    override val type: String = "external", //"file", "file_upload", "external"
+    override val type: String = FILE_TYPE_EXTERNAL, //"file", "file_upload", "external"
     override val external: ApiUrl? = null,
     override val file_upload: ApiId? = null,
     override val file: ApiUrl? = null,
 ) : File
 
 @Serializable
-internal data class ApiUrl(
-   override val url: String,
-): FileUrl
+data class ApiUrl(
+    override val url: String,
+) : FileUrl
 
 @Serializable
-internal data class ApiId(
+data class ApiId(
     override val id: UuidString,
-): FileId
+) : FileId
 
 

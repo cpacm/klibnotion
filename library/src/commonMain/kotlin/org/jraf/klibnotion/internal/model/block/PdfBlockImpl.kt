@@ -37,7 +37,7 @@ internal data class PdfBlockImpl(
     override val id: UuidString,
     override val created: Timestamp,
     override val lastEdited: Timestamp,
-    override val pdf: File,
+    override var pdf: File,
     override val caption: RichTextList?,
 ) : PdfBlock {
     override val children: List<Block>? = null

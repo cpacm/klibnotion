@@ -32,11 +32,10 @@ internal data class FileUploadImpl(
     override val `object`: String,
     override val created_time: String,
     override val last_edited_time: String,
-    override val file_upload: String?,
-    override val upload_url: String,
+    override val upload_url: String?,
     override val archived: Boolean,
     override val status: String,
-    override val fileName: String?,
-    override val contentType: String,
-    override val content_length: Long
-): FileUpload
+    override val filename: String?,
+    override val content_type: String,
+    override val content_length: Long?,
+) : FileUpload

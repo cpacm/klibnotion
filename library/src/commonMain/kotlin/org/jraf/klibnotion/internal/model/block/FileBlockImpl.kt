@@ -28,7 +28,6 @@ package org.jraf.klibnotion.internal.model.block
 import org.jraf.klibnotion.model.base.UuidString
 import org.jraf.klibnotion.model.block.Block
 import org.jraf.klibnotion.model.block.FileBlock
-import org.jraf.klibnotion.model.block.VideoBlock
 import org.jraf.klibnotion.model.date.Timestamp
 import org.jraf.klibnotion.model.file.File
 import org.jraf.klibnotion.model.richtext.RichTextList
@@ -37,7 +36,7 @@ internal data class FileBlockImpl(
     override val id: UuidString,
     override val created: Timestamp,
     override val lastEdited: Timestamp,
-    override val file: File,
+    override var file: File,
     override val caption: RichTextList?,
 ) : FileBlock {
     override val children: List<Block>? = null

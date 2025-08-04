@@ -32,6 +32,6 @@ import org.jraf.klibnotion.model.richtext.RichTextList
  * See [reference](https://developers.notion.com/reference/block#file)
  */
 interface FileBlock : Block {
-    val file: File
+    var file: File
     val caption: RichTextList?
 }

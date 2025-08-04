@@ -29,14 +29,17 @@ import org.jraf.klibnotion.internal.api.model.ApiConverter
 import org.jraf.klibnotion.internal.model.file.ExternalFileImpl
 import org.jraf.klibnotion.internal.model.file.FileImpl
 import org.jraf.klibnotion.internal.model.file.UploadFileImpl
+import org.jraf.klibnotion.model.file.FILE_TYPE_EXTERNAL
+import org.jraf.klibnotion.model.file.FILE_TYPE_FILE
+import org.jraf.klibnotion.model.file.FILE_TYPE_FILE_UPLOAD
 import org.jraf.klibnotion.model.file.File
 
 internal object ApiInPdfFileConverter : ApiConverter<ApiBlockPdf, File>() {
     override fun apiToModel(apiModel: ApiBlockPdf): File {
         return when (apiModel.type) {
-            "file" -> FileImpl(type = apiModel.type, file = apiModel.file)
-            "external" -> ExternalFileImpl(type = apiModel.type, external = apiModel.external)
-            "file_upload" -> UploadFileImpl(
+            FILE_TYPE_FILE -> FileImpl(type = apiModel.type, file = apiModel.file)
+            FILE_TYPE_EXTERNAL -> ExternalFileImpl(type = apiModel.type, external = apiModel.external)
+            FILE_TYPE_FILE_UPLOAD -> UploadFileImpl(
                 type = apiModel.type,
                 file_upload = apiModel.file_upload
             )

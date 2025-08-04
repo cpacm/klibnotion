@@ -36,7 +36,7 @@ internal data class VideoBlockImpl(
     override val id: UuidString,
     override val created: Timestamp,
     override val lastEdited: Timestamp,
-    override val video: File,
+    override var video: File,
     override val caption: RichTextList?,
 ) : VideoBlock {
     override val children: List<Block>? = null

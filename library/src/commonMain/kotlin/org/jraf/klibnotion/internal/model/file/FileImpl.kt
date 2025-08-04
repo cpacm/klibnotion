@@ -27,24 +27,27 @@ package org.jraf.klibnotion.internal.model.file
 
 import org.jraf.klibnotion.internal.api.model.file.ApiId
 import org.jraf.klibnotion.internal.api.model.file.ApiUrl
+import org.jraf.klibnotion.model.file.FILE_TYPE_EXTERNAL
+import org.jraf.klibnotion.model.file.FILE_TYPE_FILE
+import org.jraf.klibnotion.model.file.FILE_TYPE_FILE_UPLOAD
 import org.jraf.klibnotion.model.file.File
 
-internal data class FileImpl(
-    override val type: String = "file", //"file", "file_upload", "external"
+data class FileImpl(
+    override val type: String = FILE_TYPE_FILE, //"file", "file_upload", "external"
     override val external: ApiUrl? = null,
     override val file_upload: ApiId? = null,
     override val file: ApiUrl? = null,
 ) : File
 
-internal data class UploadFileImpl(
-    override val type: String = "file_upload", //"file", "file_upload", "external"
+data class UploadFileImpl(
+    override val type: String = FILE_TYPE_FILE_UPLOAD, //"file", "file_upload", "external"
     override val external: ApiUrl? = null,
     override val file_upload: ApiId? = null,
     override val file: ApiUrl? = null,
 ) : File
 
-internal data class ExternalFileImpl(
-    override val type: String = "external", //"file", "file_upload", "external"
+data class ExternalFileImpl(
+    override val type: String = FILE_TYPE_EXTERNAL, //"file", "file_upload", "external"
     override val external: ApiUrl? = null,
     override val file_upload: ApiId? = null,
     override val file: ApiUrl? = null,

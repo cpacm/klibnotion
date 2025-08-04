@@ -30,6 +30,9 @@ import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonObject
 import org.jraf.klibnotion.internal.api.model.ApiConverter
+import org.jraf.klibnotion.model.file.FILE_TYPE_EXTERNAL
+import org.jraf.klibnotion.model.file.FILE_TYPE_FILE
+import org.jraf.klibnotion.model.file.FILE_TYPE_FILE_UPLOAD
 import org.jraf.klibnotion.model.file.File
 
 internal object ApiOutFileConverter : ApiConverter<JsonElement, File>() {
@@ -37,15 +40,15 @@ internal object ApiOutFileConverter : ApiConverter<JsonElement, File>() {
         return buildJsonObject {
             put("type", model.type)
             when (model.type) {
-                "external" -> putJsonObject("external") {
+                FILE_TYPE_EXTERNAL -> putJsonObject("external") {
                     put("url", model.external?.url)
                 }
 
-                "file_upload" -> putJsonObject("file_upload") {
+                FILE_TYPE_FILE_UPLOAD -> putJsonObject("file_upload") {
                     put("id", model.file_upload?.id)
                 }
 
-                "file" -> putJsonObject("file") {
+                FILE_TYPE_FILE -> putJsonObject("file") {
                     put("url", model.file?.url)
                 }
 

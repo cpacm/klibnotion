@@ -353,7 +353,8 @@ interface NotionClient {
             external_url: String? = null,
         ): FileUpload
 
-        suspend fun uploadFile(id: UuidString, filePath: String, contentType: String): FileUpload
+        suspend fun uploadFile(id: UuidString, fileName:String,
+                               byteArray: ByteArray, contentType: String): FileUpload
 
         suspend fun checkFileUpload(id: UuidString): FileUpload
 

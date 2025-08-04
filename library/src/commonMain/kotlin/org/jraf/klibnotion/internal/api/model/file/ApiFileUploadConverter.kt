@@ -36,12 +36,11 @@ internal object ApiFileUploadConverter : ApiConverter<ApiFileUpload, FileUpload>
         `object` = apiModel.`object`,
         created_time = apiModel.created_time,
         last_edited_time = apiModel.last_edited_time,
-        file_upload = apiModel.file_upload,
         upload_url = apiModel.upload_url,
         archived = apiModel.archived,
         status = apiModel.status,
-        fileName = apiModel.fileName,
-        contentType = apiModel.contentType,
+        filename = apiModel.filename,
+        content_type = apiModel.content_type,
         content_length = apiModel.content_length
     )
 }

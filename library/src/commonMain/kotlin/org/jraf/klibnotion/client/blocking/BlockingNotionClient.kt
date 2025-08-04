@@ -283,7 +283,7 @@ interface BlockingNotionClient {
     interface FileUploads {
         /**
          * Upload a file to Notion.
-         * @see <a href="https://developers.notion.com/reference/post-upload">Upload a file</a>
+         * @see <a href="https://developers.notion.com/docs/uploading-small-files">Upload a file</a>
          */
         suspend fun createFileUpload(
             mode: String,
@@ -292,7 +292,10 @@ interface BlockingNotionClient {
             external_url: String? = null,
         ): FileUpload
 
-        suspend fun uploadFile(id: UuidString, filePath: String, contentType: String): FileUpload
+        suspend fun uploadFile(
+            id: UuidString, fileName: String,
+            byteArray: ByteArray, contentType: String,
+        ): FileUpload
 
         suspend fun checkFileUpload(id: UuidString): FileUpload
 

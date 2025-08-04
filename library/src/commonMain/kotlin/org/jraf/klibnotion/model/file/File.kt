@@ -33,11 +33,17 @@ import org.jraf.klibnotion.model.base.UuidString
 //}
 
 interface File {
-    val type: String // "external", "file_upload", "file", "emoji"
+    val type: String // "external", "file_upload", "file", "emoji","blank"
     val external: FileUrl? // Only for type "external"
     val file_upload: FileId? // Only for type "file_upload"
     val file: FileUrl? // Only for type "file"
 }
+
+const val FILE_TYPE_EXTERNAL = "external"
+const val FILE_TYPE_FILE_UPLOAD = "file_upload"
+const val FILE_TYPE_FILE = "file"
+const val FILE_TYPE_EMOJI = "emoji"
+const val FILE_TYPE_BLANK = "blank"
 
 interface FileId {
     val id: UuidString // Only for type "file_upload"
@@ -50,8 +56,8 @@ interface FileUrl {
 data class Emoji(
     override val type: String = "emoji",
     override val emoji: String,
-    override val external: FileUrl? =null,
-    override val file_upload: FileId? =null,
+    override val external: FileUrl? = null,
+    override val file_upload: FileId? = null,
     override val file: FileUrl? = null,
 ) : EmojiOrFile
 

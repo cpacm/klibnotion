@@ -75,8 +75,13 @@ class MutableBlockList(
     private val blockList: MutableList<Block> = mutableListOf(),
 ) : List<Block> by blockList {
 
-    private fun add(block: Block): MutableBlockList {
+    fun add(block: Block): MutableBlockList {
         blockList.add(block)
+        return this
+    }
+
+    fun remove(block: Block): MutableBlockList {
+        blockList.remove(block)
         return this
     }
 

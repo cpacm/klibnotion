@@ -32,6 +32,9 @@ import org.jraf.klibnotion.model.richtext.RichTextList
  * See [reference](https://developers.notion.com/reference/block#image-blocks)
  */
 interface ImageBlock : Block {
-    val image: File
+    var image: File
     val caption: RichTextList?
 }
+
+val IMAGE_TYPE_ARRAY =
+    arrayOf("gif", "heic", "jpeg", "jpg", "png", "svg", "tif", "tiff", "bmp", "webp", "ico")

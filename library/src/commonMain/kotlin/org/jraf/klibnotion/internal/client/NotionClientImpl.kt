@@ -549,11 +549,13 @@ internal class NotionClientImpl(
             .apiToModel(ApiFileUploadConverter)
     }
 
-    override suspend fun uploadFile(id: UuidString,filePath: String,contentType:String): FileUpload {
-        val path = Path(filePath)
-        val fileName = path.name
-
-        return service.uploadFile(id,fileName, path, contentType)
+    override suspend fun uploadFile(
+        id: UuidString,
+        fileName: String,
+        byteArray: ByteArray,
+        contentType: String,
+    ): FileUpload {
+        return service.uploadFile(id, fileName, byteArray, contentType)
             .apiToModel(ApiFileUploadConverter)
     }
 

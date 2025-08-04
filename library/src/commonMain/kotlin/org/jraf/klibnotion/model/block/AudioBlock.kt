@@ -32,6 +32,12 @@ import org.jraf.klibnotion.model.richtext.RichTextList
  * See [reference](https://developers.notion.com/reference/block#video-blocks)
  */
 interface AudioBlock : Block {
-    val audio: File
+    var audio: File
     val caption: RichTextList?
 }
+
+val AUDIO_TYPE_ARRAY = arrayOf(
+    "aac", "adts", "mid", "midi",
+    "mp3", "mpga", "m4a", "m4b", "mp4",
+    "oga", "ogg", "wav", "wma"
+)

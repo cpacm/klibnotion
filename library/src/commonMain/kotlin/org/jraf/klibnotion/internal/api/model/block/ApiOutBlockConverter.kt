@@ -64,6 +64,10 @@ import org.jraf.klibnotion.model.block.ToDoBlock
 import org.jraf.klibnotion.model.block.ToggleBlock
 import org.jraf.klibnotion.model.block.UnknownTypeBlock
 import org.jraf.klibnotion.model.block.VideoBlock
+import org.jraf.klibnotion.model.file.FILE_TYPE_BLANK
+import org.jraf.klibnotion.model.file.FILE_TYPE_EXTERNAL
+import org.jraf.klibnotion.model.file.FILE_TYPE_FILE
+import org.jraf.klibnotion.model.file.FILE_TYPE_FILE_UPLOAD
 import org.jraf.klibnotion.model.file.File
 import org.jraf.klibnotion.model.richtext.RichTextList
 
@@ -164,9 +168,6 @@ internal object ApiOutBlockConverter : ApiConverter<JsonElement, Block>() {
                     }
 
                     is PdfBlock -> {
-                        model.caption?.let {
-                            put("caption", it.modelToApi(ApiOutRichTextListConverter))
-                        }
                         putFileBlock(model.pdf){
                             model.caption?.let {
                                 put("caption", it.modelToApi(ApiOutRichTextListConverter))
@@ -221,7 +222,7 @@ internal object ApiOutBlockConverter : ApiConverter<JsonElement, Block>() {
 
     private fun JsonObjectBuilder.putFileBlock(file: File,builderAction: JsonObjectBuilder.() -> Unit) {
         when (file.type) {
-            "file" -> {
+            FILE_TYPE_FILE -> {
                 put("type", "file")
                 putJsonObject("file") {
                     put("url", file.file?.url)
@@ -229,7 +230,7 @@ internal object ApiOutBlockConverter : ApiConverter<JsonElement, Block>() {
                 builderAction()
             }
 
-            "external" -> {
+            FILE_TYPE_EXTERNAL -> {
                 put("type", "external")
                 putJsonObject("external") {
                     put("url", file.external?.url)
@@ -237,7 +238,7 @@ internal object ApiOutBlockConverter : ApiConverter<JsonElement, Block>() {
                 builderAction()
             }
 
-            "file_upload" -> {
+            FILE_TYPE_FILE_UPLOAD -> {
                 put("type", "file_upload")
                 putJsonObject("file_upload") {
                     put("id", file.file_upload?.id)

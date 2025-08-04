@@ -27,14 +27,17 @@ package org.jraf.klibnotion.internal.client
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.request.forms.FormPart
 import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
+import io.ktor.client.request.forms.submitForm
 import io.ktor.client.request.forms.submitFormWithBinaryData
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
+import io.ktor.client.request.request
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.Headers
@@ -46,7 +49,13 @@ import kotlinx.io.buffered
 import kotlinx.io.files.Path
 import kotlinx.io.files.SystemFileSystem
 import kotlinx.io.files.source
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonBuilder
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonObjectBuilder
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 import org.jraf.klibnotion.internal.api.model.block.ApiAppendBlocksParameters
 import org.jraf.klibnotion.internal.api.model.block.ApiBlock
 import org.jraf.klibnotion.internal.api.model.database.ApiDatabase
@@ -255,15 +264,15 @@ internal class NotionService(private val httpClient: HttpClient) {
 
     suspend fun uploadFile(
         id: UuidString, fileName: String,
-        path: Path, contentType: String,
+        byteArray: ByteArray, contentType: String,
     ): ApiFileUpload {
         return httpClient.submitFormWithBinaryData(
             url = "$BASE_URL/$FILE_UPLOADS/$id/send",
             formData = formData {
-                append("file", SystemFileSystem.source(path).buffered(), headers = Headers.build {
-                    append("filename", fileName)
+                append("file", byteArray, Headers.build {
+                    append(HttpHeaders.ContentDisposition, "filename=\"${fileName}\"")
                     append(HttpHeaders.ContentType, contentType)
-                }) // Assuming File has readBytes() and contentType properties
+                })
             }
         ).body()
     }

@@ -29,6 +29,9 @@ import org.jraf.klibnotion.internal.api.model.ApiConverter
 import org.jraf.klibnotion.internal.model.file.ExternalFileImpl
 import org.jraf.klibnotion.internal.model.file.FileImpl
 import org.jraf.klibnotion.internal.model.file.UploadFileImpl
+import org.jraf.klibnotion.model.file.FILE_TYPE_EXTERNAL
+import org.jraf.klibnotion.model.file.FILE_TYPE_FILE
+import org.jraf.klibnotion.model.file.FILE_TYPE_FILE_UPLOAD
 import org.jraf.klibnotion.model.file.File
 
 internal object ApiFileConverter : ApiConverter<ApiFile?, File?>() {
@@ -36,17 +39,17 @@ internal object ApiFileConverter : ApiConverter<ApiFile?, File?>() {
     override fun apiToModel(apiModel: ApiFile?): File? {
         if (apiModel == null) return null
         return when (apiModel.type) {
-            "external" -> {
+            FILE_TYPE_EXTERNAL -> {
                 ExternalFileImpl(
                     external = apiModel.external
                 )
             }
 
-            "file" -> {
+            FILE_TYPE_FILE -> {
                 FileImpl(file = apiModel.file)
             }
 
-            "file_upload" -> {
+            FILE_TYPE_FILE_UPLOAD -> {
                 UploadFileImpl(file_upload = apiModel.file_upload)
             }
 

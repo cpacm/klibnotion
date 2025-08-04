@@ -262,9 +262,11 @@ internal class BlockingNotionClientImpl(
         notionClient.fileUploads.createFileUpload(mode, filename, content_type, external_url)
     }
 
-    override suspend fun uploadFile(id: UuidString, filePath: String, contentType: String) =
-        runBlocking {
-            notionClient.fileUploads.uploadFile(id, filePath, contentType)
+    override suspend fun uploadFile(
+        id: UuidString, fileName: String,
+        byteArray: ByteArray, contentType: String,
+    ) = runBlocking {
+            notionClient.fileUploads.uploadFile(id, fileName, byteArray, contentType)
         }
 
     override suspend fun checkFileUpload(id: UuidString) = runBlocking {

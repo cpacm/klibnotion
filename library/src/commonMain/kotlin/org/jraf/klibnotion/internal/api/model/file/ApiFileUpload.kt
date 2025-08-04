@@ -37,11 +37,10 @@ internal data class ApiFileUpload(
     val `object`: String, // file_upload
     val created_time: String,
     val last_edited_time: String,
-    val file_upload: String? = null,
-    val upload_url: String,
+    val upload_url: String? = null,
     val archived: Boolean = false,
     val status: String, // "pending" or "uploaded" or "failed" or "expired"
-    val fileName: String? = null,
-    val contentType: String,
-    val content_length: Long,
+    val filename: String? = null,
+    val content_type: String,
+    val content_length: Long?,
 )

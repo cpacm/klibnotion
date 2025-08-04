@@ -37,5 +37,4 @@ internal data class ApiFileUploadParameters(
     val content_type: String? = null, // Recommended when sending the file in multiple parts. Must match the content type of the file that's sent
     val number_of_parts: Int = 1, // 1-1000, Required when mode is multi_part. The number of parts that will be sent in the request
     val external_url: String? = null, // Required when mode is external_url. The URL of the file to upload
-
 )

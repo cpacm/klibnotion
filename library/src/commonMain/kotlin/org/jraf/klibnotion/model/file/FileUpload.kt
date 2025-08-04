@@ -30,11 +30,10 @@ interface FileUpload {
     val `object`: String // file_upload
     val created_time: String
     val last_edited_time: String
-    val file_upload: String?
-    val upload_url: String
+    val upload_url: String?
     val archived: Boolean
     val status: String // "pending" or "uploaded" or "failed" or "expired"
-    val fileName: String?
-    val contentType: String
-    val content_length: Long
+    val filename: String?
+    val content_type: String
+    val content_length: Long?
 }

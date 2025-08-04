@@ -37,7 +37,7 @@ internal data class AudioBlockImpl(
     override val id: UuidString,
     override val created: Timestamp,
     override val lastEdited: Timestamp,
-    override val audio: File,
+    override var audio: File,
     override val caption: RichTextList? = null,
 ) : AudioBlock {
     override val children: List<Block>? = null

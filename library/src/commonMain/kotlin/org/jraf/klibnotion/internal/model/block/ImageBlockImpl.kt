@@ -36,7 +36,7 @@ internal data class ImageBlockImpl(
     override val id: UuidString,
     override val created: Timestamp,
     override val lastEdited: Timestamp,
-    override val image: File,
+    override var image: File,
     override val caption: RichTextList?,
 ) : ImageBlock {
     override val children: List<Block>? = null

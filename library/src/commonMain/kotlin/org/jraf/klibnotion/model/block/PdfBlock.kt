@@ -32,6 +32,6 @@ import org.jraf.klibnotion.model.richtext.RichTextList
  * See [reference](https://developers.notion.com/reference/block#video-blocks)
  */
 interface PdfBlock : Block {
-    val pdf: File
+    var pdf: File
     val caption: RichTextList?
 }

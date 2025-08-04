@@ -31,31 +31,35 @@ import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonObject
 import org.jraf.klibnotion.internal.api.model.ApiConverter
 import org.jraf.klibnotion.model.base.EmojiOrFile
+import org.jraf.klibnotion.model.file.FILE_TYPE_EMOJI
+import org.jraf.klibnotion.model.file.FILE_TYPE_EXTERNAL
+import org.jraf.klibnotion.model.file.FILE_TYPE_FILE
+import org.jraf.klibnotion.model.file.FILE_TYPE_FILE_UPLOAD
 
 internal object ApiOutEmojiOrFileConverter : ApiConverter<JsonElement, EmojiOrFile>() {
     override fun modelToApi(model: EmojiOrFile): JsonElement {
         return buildJsonObject {
             when (model.type) {
-                "emoji" -> {
+                FILE_TYPE_EMOJI -> {
                     put("type", "emoji")
                     put("emoji", model.emoji)
                 }
 
-                "external" -> {
+                FILE_TYPE_EXTERNAL -> {
                     put("type", "external")
                     putJsonObject("external") {
                         put("url", model.external!!.url)
                     }
                 }
 
-                "file_upload" -> {
+                FILE_TYPE_FILE_UPLOAD -> {
                     put("type", "file_upload")
                     putJsonObject("file_upload") {
                         put("id", model.file_upload!!.id)
                     }
                 }
 
-                "file" -> {
+                FILE_TYPE_FILE -> {
                     put("type", "file")
                     putJsonObject("file") {
                         put("url", model.file!!.url)

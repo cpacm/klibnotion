@@ -32,6 +32,14 @@ import org.jraf.klibnotion.model.richtext.RichTextList
  * See [reference](https://developers.notion.com/reference/block#video-blocks)
  */
 interface VideoBlock : Block {
-    val video: File
+    var video: File
     val caption: RichTextList?
 }
+
+//  https://www.youtube.com/watch?v=[id], https://www.youtube.com/embed/[id]
+val VIDEO_TYPE_ARRAY = arrayOf(
+    "amv", "asf", "wmv", "avi",
+    "f4v", "flv", "gifv", "m4v",
+    "mp4", "mkv", "webm", "mov",
+    "qt", "mpg", "mpeg", "mpv"
+)
