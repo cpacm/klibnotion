@@ -9,3 +9,4 @@ out
 local.properties
 /docs
 /.idea
+.kotlin

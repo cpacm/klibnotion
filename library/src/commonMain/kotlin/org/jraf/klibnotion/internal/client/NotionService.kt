@@ -27,35 +27,20 @@ package org.jraf.klibnotion.internal.client
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.request.forms.FormPart
-import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
-import io.ktor.client.request.forms.submitForm
 import io.ktor.client.request.forms.submitFormWithBinaryData
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
-import io.ktor.client.request.request
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
 import io.ktor.util.encodeBase64
-import kotlinx.io.Source
-import kotlinx.io.buffered
-import kotlinx.io.files.Path
-import kotlinx.io.files.SystemFileSystem
-import kotlinx.io.files.source
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonBuilder
 import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonObjectBuilder
-import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.put
 import org.jraf.klibnotion.internal.api.model.block.ApiAppendBlocksParameters
 import org.jraf.klibnotion.internal.api.model.block.ApiBlock
 import org.jraf.klibnotion.internal.api.model.database.ApiDatabase
@@ -124,7 +109,6 @@ internal class NotionService(private val httpClient: HttpClient) {
     suspend fun getUser(id: String): ApiUser {
         return httpClient.get("$BASE_URL/$USERS/$id").body()
     }
-
 
     suspend fun getUserList(startCursor: String?): ApiResultPage<ApiUser> {
         return httpClient.get("$BASE_URL/$USERS") {

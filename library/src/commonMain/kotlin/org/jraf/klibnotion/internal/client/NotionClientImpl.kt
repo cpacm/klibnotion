@@ -143,6 +143,8 @@ internal class NotionClientImpl(
                         // This is needed to accept JSON Numbers to be deserialized as Strings
                         isLenient = true
 
+                        coerceInputValues = true
+
                         // This may improve performance
                         // PLUS is a workaround for these issues:
                         // - https://youtrack.jetbrains.com/issue/KTOR-2740
