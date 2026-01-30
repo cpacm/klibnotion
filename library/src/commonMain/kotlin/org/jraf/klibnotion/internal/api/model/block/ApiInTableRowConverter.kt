@@ -26,24 +26,18 @@
 package org.jraf.klibnotion.internal.api.model.block
 
 import org.jraf.klibnotion.internal.api.model.ApiConverter
-import org.jraf.klibnotion.internal.model.file.ExternalFileImpl
-import org.jraf.klibnotion.internal.model.file.FileImpl
-import org.jraf.klibnotion.internal.model.file.UploadFileImpl
-import org.jraf.klibnotion.model.file.FILE_TYPE_EXTERNAL
-import org.jraf.klibnotion.model.file.FILE_TYPE_FILE
-import org.jraf.klibnotion.model.file.FILE_TYPE_FILE_UPLOAD
-import org.jraf.klibnotion.model.file.File
+import org.jraf.klibnotion.internal.api.model.apiToModel
+import org.jraf.klibnotion.internal.api.model.richtext.ApiRichTextConverter
+import org.jraf.klibnotion.model.richtext.RichTextList
 
-internal object ApiInTableRowConverter : ApiConverter<ApiBlockFile, File>() {
-    override fun apiToModel(apiModel: ApiBlockFile): File {
-        return when (apiModel.type) {
-            FILE_TYPE_FILE -> FileImpl(type = apiModel.type, file = apiModel.file)
-            FILE_TYPE_EXTERNAL -> ExternalFileImpl(type = apiModel.type, external = apiModel.external)
-            FILE_TYPE_FILE_UPLOAD -> UploadFileImpl(
-                type = apiModel.type,
-                file_upload = apiModel.file_upload
-            )
-            else -> throw RuntimeException()
+internal object ApiInTableRowConverter : ApiConverter<ApiBlockTableRow, List<RichTextList>>() {
+    override fun apiToModel(apiModel: ApiBlockTableRow): List<RichTextList> {
+        val cells = apiModel.cells
+        val richTextList = mutableListOf<RichTextList>()
+        for (apiModel in cells) {
+            val cellRichText = RichTextList(apiModel.apiToModel(ApiRichTextConverter))
+            richTextList.add(cellRichText)
         }
+        return richTextList
     }
 }

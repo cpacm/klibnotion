@@ -250,8 +250,8 @@ internal object ApiOutBlockConverter : ApiConverter<JsonElement, Block>() {
 
     private fun TableRowBlock.cells(jsonBuilder: JsonObjectBuilder) {
         jsonBuilder.putJsonArray("cells") {
-            cells.map { row ->
-                row.modelToApi(ApiOutRichTextListConverter)
+            cells.forEach { row ->
+                add(row.modelToApi(ApiOutRichTextListConverter))
             }
         }
     }
